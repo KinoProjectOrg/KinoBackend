@@ -33,7 +33,7 @@ public class ReservationModel {
             joinColumns = @JoinColumn(name = "reservation_id"),
             inverseJoinColumns = @JoinColumn(name = "seat_id")
     )
-    private List<Seat> seats;
+    private List<SeatModel> seatList;
 
 
 }
