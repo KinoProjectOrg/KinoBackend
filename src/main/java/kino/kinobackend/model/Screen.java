@@ -12,12 +12,8 @@ public class Screen {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int screenId;
     private int screen_number;
-    private int max_rows;
-    private int seats_per_row;
-
-    @OneToMany(mappedBy = "screen")
-    private Set<Showing> shows = new HashSet<>();
-
+    private int maxRows;
+    private int seatsPerRow;
 
     public int getScreenId() {
         return screenId;
@@ -35,19 +31,19 @@ public class Screen {
         this.screen_number = screen_number;
     }
 
-    public int getMax_rows() {
-        return max_rows;
+    public int getMaxRows() {
+        return maxRows;
     }
 
-    public void setMax_rows(int max_rows) {
-        this.max_rows = max_rows;
+    public void setMaxRows(int maxRows) {
+        this.maxRows = maxRows;
     }
 
-    public int getSeats_per_row() {
-        return seats_per_row;
+    public int getSeatsPerRow() {
+        return seatsPerRow;
     }
 
-    public void setSeats_per_row(int seats_per_row) {
-        this.seats_per_row = seats_per_row;
+    public void setSeatsPerRow(int seatsPerRow) {
+        this.seatsPerRow = seatsPerRow;
     }
 }
