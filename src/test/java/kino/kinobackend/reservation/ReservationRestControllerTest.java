@@ -11,7 +11,6 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -40,7 +39,7 @@ class ReservationRestControllerTest {
     }
 
     @Test
-    void getAll() throws Exception {
+    void getAllReservationTest() throws Exception {
 
         List<ReservationModel> reservations = new ArrayList<>();
         reservations.add(reservationModel);
@@ -54,7 +53,7 @@ class ReservationRestControllerTest {
     }
 
     @Test
-    void getById() throws Exception {
+    void getReservationByIdTest() throws Exception {
 
         Mockito.when(reservationService.findReservationById(1)).thenReturn(reservationModel);
 
@@ -67,7 +66,7 @@ class ReservationRestControllerTest {
     }
 
     @Test
-    void create() throws Exception {
+    void createReservationTest() throws Exception {
 
         Mockito.when(reservationService.createReservation(Mockito.any(ReservationModel.class)))
                 .thenReturn(reservationModel);
@@ -78,15 +77,16 @@ class ReservationRestControllerTest {
         mockMvc.perform(post("/reservation/create")
                 .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.reservation_id").value(1));
 
     }
 
     @Test
-    void update() throws Exception {
+    void updateReservationTest() throws Exception {
 
-        Mockito.when(reservationService.updateReservation(Mockito.any(ReservationModel.class)));
+        Mockito.when(reservationService.updateReservation(Mockito.any(ReservationModel.class)))
+                .thenReturn(reservationModel);
 
         ObjectMapper objectMapper = new ObjectMapper();
         String requestBody = objectMapper.writeValueAsString(reservationModel);
@@ -99,6 +99,12 @@ class ReservationRestControllerTest {
     }
 
     @Test
-    void delete() {
+    void deleteReservationTest() throws Exception {
+
+        Mockito.doNothing().when(reservationService).deleteReservation(1);
+
+        mockMvc.perform(delete("/reservation/delete/1").
+                contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
     }
 }

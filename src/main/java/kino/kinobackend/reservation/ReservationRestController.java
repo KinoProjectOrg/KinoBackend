@@ -1,6 +1,8 @@
 package kino.kinobackend.reservation;
 
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,23 +23,26 @@ public class ReservationRestController {
     }
 
     @GetMapping("/get/{id}")
-    public ReservationModel getById(@PathVariable long id){
-        return reservationService.findReservationById(id);
+    public ResponseEntity<ReservationModel> getById(@PathVariable long id){
+         ReservationModel foundReservation = reservationService.findReservationById(id);
+         return ResponseEntity.status(HttpStatus.OK).body(foundReservation);
     }
 
     @PostMapping("/create")
-    public ReservationModel create(@RequestBody ReservationModel reservationModel){
-        return reservationService.createReservation(reservationModel);
+    public ResponseEntity<ReservationModel> create(@RequestBody ReservationModel reservationModel){
+        ReservationModel createdReservation = reservationService.createReservation(reservationModel);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdReservation);
     }
 
     @PutMapping("/update/{id}")
-    public ReservationModel update(@PathVariable long id, @RequestBody ReservationModel reservationModel){
+    public ResponseEntity<ReservationModel> update(@PathVariable long id, @RequestBody ReservationModel reservationModel){
         reservationModel.setReservation_id(id);
-        return reservationService.updateReservation(reservationModel);
+        ReservationModel updatedReservation = reservationService.updateReservation(reservationModel);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedReservation);
     }
 
     @DeleteMapping("/delete/{id}")
-    public void delete(@PathVariable long id){
+    public void deleteReservation(@PathVariable long id){
         reservationService.deleteReservation(id);
     }
 }

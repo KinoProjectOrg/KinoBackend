@@ -7,7 +7,7 @@ import java.util.List;
 @Service
 public class ReservationService {
 
-    private ReservationRepository reservationRepository;
+    private final ReservationRepository reservationRepository;
 
     public ReservationService(ReservationRepository reservationRepository) {
         this.reservationRepository = reservationRepository;
@@ -18,7 +18,8 @@ public class ReservationService {
     }
 
     public ReservationModel findReservationById(long id) {
-        return reservationRepository.findById(id).orElse(null);
+        return reservationRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Reservation not found with id: " + id));
     }
 
     public ReservationModel createReservation(ReservationModel reservation) {
@@ -26,10 +27,13 @@ public class ReservationService {
     }
 
     public ReservationModel updateReservation(ReservationModel reservation) {
+        if(!reservationRepository.existsById(reservation.getReservation_id())) {
+            throw new IllegalArgumentException("Reservation not found");
+        }
         return reservationRepository.save(reservation);
     }
 
-    public void deleteReservation(Long id) {
+    public void deleteReservation(long id) {
         reservationRepository.deleteById(id);
     }
 }
