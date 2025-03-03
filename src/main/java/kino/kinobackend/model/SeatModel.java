@@ -1,4 +1,4 @@
-package seat;
+package kino.kinobackend.model;
 
 
 import jakarta.persistence.Entity;
@@ -22,5 +22,5 @@ public class SeatModel {
 
     @ManyToOne
     @JoinColumn(name = "ScreenModel", referencedColumnName = "screenId")
-    private Screenmodel screenmodel;
+    private Screen screen;
 }
