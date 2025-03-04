@@ -12,7 +12,7 @@ public class ShowingService{
         this.showingRepository = showingRepository;
     }
 
-    public List<ShowingModel> allShowings() {
+    public List<ShowingModel> getAllShowings() {
         return showingRepository.findAll();
     }
 
