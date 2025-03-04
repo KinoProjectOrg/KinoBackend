@@ -1,14 +1,15 @@
-package kino.kinobackend.model;
+package kino.kinobackend.movie;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import kino.kinobackend.showing.ShowingModel;
 
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class Movie {
+public class MovieModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +24,7 @@ public class Movie {
 
     @OneToMany(mappedBy = "movie")
     @JsonBackReference
-    private Set<Showing> shows = new HashSet<Showing>();
+    private Set<ShowingModel> shows = new HashSet<ShowingModel>();
 
     public int getMovieId() {
         return movieId;
