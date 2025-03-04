@@ -1,10 +1,14 @@
 package kino.kinobackend.reservation;
 
 import jakarta.persistence.*;
+import kino.kinobackend.model.SeatModel;
+import kino.kinobackend.model.Showing;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Setter
 @Getter
@@ -20,7 +24,7 @@ public class ReservationModel {
 
     @ManyToOne
     @JoinColumn(name = "show_id")
-    private Show show;
+    private Showing show;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
