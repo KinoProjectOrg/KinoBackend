@@ -40,4 +40,9 @@ public class MovieModel {
     private LocalDate releaseDate;
 
     private boolean status;
+
+    // Overriding the setter for posterPath
+    public void setPosterPath(String path) {
+        this.posterPath = "https://image.tmdb.org/t/p/w500" + path;  // Full path to movie poster img - change the w500 for other sizes...
+    }
 }
