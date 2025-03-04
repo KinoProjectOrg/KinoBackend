@@ -1,20 +1,21 @@
-package seat;
+package kino.kinobackend.seat;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
+import kino.kinobackend.reservation.ReservationModel;
 import kino.kinobackend.screen.ScreenModel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class SeatModel {
 
@@ -27,11 +28,13 @@ public class SeatModel {
     @Column(name = "seat_row")
     private int seatRow;
 
+    private boolean isReserved;
+
     @ManyToOne
-    @JoinColumn(name = "ScreenModel", referencedColumnName = "screen_id")
-    private Screenmodel screenmodel;
+    @JoinColumn(name = "screen_id", referencedColumnName = "screen_id")
+    private ScreenModel screenmodel;
 
     @ManyToMany(mappedBy = "seatList")
-    private Set <ReservationModel> reservations = new HashSet<>()
+    private Set<ReservationModel> reservations = new HashSet<>();
 
 }
