@@ -1,19 +1,10 @@
 package seat;
 
-public class SeatService {
-    private final SeatRepository seatRepository;
+import java.util.List;
 
-    public SeatService(final SeatRepository seatRepository) {this.seatRepository = seatRepository;}
-
-    public SeatModel getSeat(){
-
-    }
-
-    public list<seats> getAllSeats(){
-
-    }
-
-    public boolean seatStatus(){
-
-    }
+public interface SeatService {
+    List<SeatModel> getAllSeats();
+    SeatModel getSeat(int seatNo);
+    boolean updateSeat(SeatModel seat);
+    boolean seatStatus(int seatNo);
 }

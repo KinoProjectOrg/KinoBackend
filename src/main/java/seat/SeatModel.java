@@ -15,12 +15,16 @@ import java.util.HashSet;
 public class SeatModel {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "seat_id")
     private int seatId;
+    @Column(name = "seat_no")
     private int seatNo;
+    @Column(name = "seat_row")
     private int seatRow;
 
     @ManyToOne
-    @JoinColumn(name = "ScreenModel", referencedColumnName = "screenId")
+    @JoinColumn(name = "ScreenModel", referencedColumnName = "screen_id")
     private Screenmodel screenmodel;
 
     @ManyToMany(mappedBy = "seatList")
