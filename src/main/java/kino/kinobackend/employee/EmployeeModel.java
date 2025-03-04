@@ -21,6 +21,9 @@ public class EmployeeModel {
 
     private String name;
 
+    @Column(nullable = false)
+    private String password;
+
     @Enumerated(EnumType.STRING) // gemmer enum-værdien som en streng.
     @Column(name="role")
     private Role role; // admin eller Filmoperatør?
