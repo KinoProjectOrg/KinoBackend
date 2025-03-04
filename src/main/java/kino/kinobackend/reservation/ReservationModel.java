@@ -26,9 +26,9 @@ public class ReservationModel {
     @JoinColumn(name = "show_id")
     private ShowingModel show;
 
-    @ManyToOne
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
+//    @ManyToOne
+//    @JoinColumn(name = "customer_id")
+//    private Customer customer;
 
 
     @ManyToMany
