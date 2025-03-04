@@ -34,7 +34,7 @@ class ReservationRestControllerTest {
     @BeforeEach
     public void setUp() {
         reservationModel = new ReservationModel();
-        reservationModel.setReservation_id(1);
+        reservationModel.setReservationId(1);
 
     }
 
@@ -60,7 +60,7 @@ class ReservationRestControllerTest {
         mockMvc.perform(get("/reservation/get/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.reservation_id").value(1));
+                .andExpect(jsonPath("$.reservationId").value(1));
 
 
     }
@@ -78,7 +78,7 @@ class ReservationRestControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.reservation_id").value(1));
+                .andExpect(jsonPath("$.reservationId").value(1));
 
     }
 
@@ -95,7 +95,7 @@ class ReservationRestControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.reservation_id").value(1));
+                .andExpect(jsonPath("$.reservationId").value(1));
     }
 
     @Test
