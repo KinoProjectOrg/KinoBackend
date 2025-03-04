@@ -36,13 +36,18 @@ public class ReservationRestController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<ReservationModel> update(@PathVariable long id, @RequestBody ReservationModel reservationModel){
-        reservationModel.setReservation_id(id);
+        reservationModel.setReservationId(id);
         ReservationModel updatedReservation = reservationService.updateReservation(reservationModel);
         return ResponseEntity.status(HttpStatus.OK).body(updatedReservation);
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteReservation(@PathVariable long id){
-        reservationService.deleteReservation(id);
+    public ResponseEntity<ReservationModel> deleteReservation(@PathVariable long id){
+        try {
+            reservationService.deleteReservation(id);
+            return ResponseEntity.noContent().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
