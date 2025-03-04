@@ -1,12 +1,9 @@
-package kino.kinobackend.model;
+package kino.kinobackend.screen;
 
 import jakarta.persistence.*;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @Entity
-public class Screen {
+public class ScreenModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

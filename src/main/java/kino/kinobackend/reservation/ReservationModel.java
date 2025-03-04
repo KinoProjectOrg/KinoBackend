@@ -2,8 +2,8 @@ package kino.kinobackend.reservation;
 
 import jakarta.persistence.*;
 import kino.kinobackend.customer.CustomerModel;
-import kino.kinobackend.model.SeatModel;
-import kino.kinobackend.model.Showing;
+import kino.kinobackend.seat.SeatModel;
+import kino.kinobackend.showing.ShowingModel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,7 +26,7 @@ public class ReservationModel {
 
     @ManyToOne
     @JoinColumn(name = "show_id")
-    private Showing show;
+    private ShowingModel show;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")

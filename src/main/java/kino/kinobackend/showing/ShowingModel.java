@@ -1,13 +1,13 @@
-package kino.kinobackend.model;
+package kino.kinobackend.showing;
 
 import jakarta.persistence.*;
+import kino.kinobackend.movie.MovieModel;
+import kino.kinobackend.screen.ScreenModel;
 
 import java.time.LocalTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
-public class Showing {
+public class ShowingModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,10 +17,10 @@ public class Showing {
 
     @ManyToOne
     @JoinColumn(referencedColumnName = "movieId", nullable = false)
-    private Movie movie;
+    private MovieModel movieModel;
     @ManyToOne
     @JoinColumn(referencedColumnName = "screenId")
-    private Screen screen;
+    private ScreenModel screenModel;
 
 
     public int getShowingId() {
@@ -47,19 +47,19 @@ public class Showing {
         this.end_time = end_time;
     }
 
-    public Movie getMovie() {
-        return movie;
+    public MovieModel getMovie() {
+        return movieModel;
     }
 
-    public void setMovie(Movie movie) {
-        this.movie = movie;
+    public void setMovie(MovieModel movieModel) {
+        this.movieModel = movieModel;
     }
 
-    public Screen getScreen() {
-        return screen;
+    public ScreenModel getScreen() {
+        return screenModel;
     }
 
-    public void setScreen(Screen screen) {
-        this.screen = screen;
+    public void setScreen(ScreenModel screenModel) {
+        this.screenModel = screenModel;
     }
 }

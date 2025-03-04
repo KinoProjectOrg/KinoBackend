@@ -1,4 +1,4 @@
-package kino.kinobackend.model;
+package kino.kinobackend.employee;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name="employee")
-public class Employee {
+public class EmployeeModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
