@@ -1,0 +1,39 @@
+package kino.kinobackend.showing;
+
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class ShowingService{
+    private final ShowingRepository showingRepository;
+
+    public ShowingService(ShowingRepository showingRepository) {
+        this.showingRepository = showingRepository;
+    }
+
+    public List<ShowingModel> allShowings() {
+        return showingRepository.findAll();
+    }
+
+    public ShowingModel findShowingById(int id) {
+        return showingRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Show not found with id: " + id + " was not found"));
+    }
+
+    public void createShowing(ShowingModel showingModel) {
+        showingRepository.save(showingModel);
+    }
+
+    public ShowingModel updateShowing(ShowingModel showingModel) {
+        if(!showingRepository.existsById(showingModel.getShowingId())) {
+            throw new IllegalArgumentException("Showing with id " + showingModel.getShowingId() + " not found");
+        }
+        return showingRepository.save(showingModel);
+    }
+
+    public void deleteShowing(int id) {
+        showingRepository.deleteById(id);
+    }
+}
+
