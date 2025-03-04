@@ -1,6 +1,5 @@
 package kino.kinobackend.movie;
 
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -12,11 +11,37 @@ import java.util.stream.Collectors;
 @Service
 public class MovieServiceImpl implements MovieService {
 
-    private WebClient webClient;
+    /*
+    *
+    * Initial setup with constructor injection
+    *
+    * */
 
-    public MovieServiceImpl(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.build();
+    private final MovieRepository movieRepository;
+    private final WebClient webClient;
+
+    public MovieServiceImpl(WebClient webClient, MovieRepository movieRepository) {
+        this.webClient = webClient;
+        this.movieRepository = movieRepository;
     }
+
+    /*
+    *
+    * Here we have the methods to fetch and save data from tmdb to our database
+    *
+    * */
+
+    @Override
+    public MovieModel fetchMovie(String title) {
+        return null;
+    }
+
+
+    /*
+    *
+    * Here we have methods that we can use, when we have retrieved data and saved them in our database
+    *
+    * */
 
 
     @Override
@@ -26,18 +51,18 @@ public class MovieServiceImpl implements MovieService {
         return movies;
     }
 
-    @Override
-    public String getUpcomingMovies(){
+    /*
+    *
+    * Here are methods which just fetches "live data" form tmdb api without saving them
+    *
+    * */
 
-        return webClient.get()
-                .uri("/upcoming")
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
-    }
+    // Retrieve a movie from tmdb.org and save it to the database ...
 
+
+    // Get upcoming movies from tmdb.org from today and one page ahead ... returned as a list of MovieModel instances
     @Override
-    public List<MovieModel> getFutureMovies() {
+    public List<MovieModel> getUpcomingMovies() {
 
         LocalDate today = LocalDate.now();
 

@@ -11,32 +11,37 @@ import java.util.List;
 @RequestMapping("/movies")
 public class MovieController {
 
+    /*
+    *
+    * Initial setup ...
+    *
+    * */
+
     private final MovieServiceImpl movieServiceImpl;
 
     public MovieController(MovieServiceImpl movieServiceImpl) {
         this.movieServiceImpl = movieServiceImpl;
     }
 
-    // Fetch upcoming movies directly from  TMDB ...
-    @GetMapping("/coming")
-    public ResponseEntity<String> getUpcomingMovies() {
+    /*
+    *
+    * Add movies to database
+    *
+    * */
 
-        String futureMovies = movieServiceImpl.getUpcomingMovies();
 
-        if (futureMovies != null) {
-            return ResponseEntity.ok(futureMovies);
-        }
-        else {
-            return ResponseEntity.notFound().build();
-        }
-    }
 
+    /*
+    *
+    * Movie stream from tmdb.org no persistence
+    *
+    * */
 
     // Fetch upcoming movies and display them as a list of MovieModel ...
     @GetMapping("/upcoming")
-    public ResponseEntity<List<MovieModel>> getFutureMovies() {
+    public ResponseEntity<List<MovieModel>> getUpcomingMovies() {
 
-        List<MovieModel> futureMovies = movieServiceImpl.getFutureMovies();
+        List<MovieModel> futureMovies = movieServiceImpl.getUpcomingMovies();
 
         if (futureMovies != null && !futureMovies.isEmpty()) {
             return ResponseEntity.ok(futureMovies);
