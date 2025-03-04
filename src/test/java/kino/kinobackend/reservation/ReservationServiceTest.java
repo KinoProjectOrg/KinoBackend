@@ -28,37 +28,36 @@ class ReservationServiceTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
         reservationModel = new ReservationModel();
         reservationModel.setReservationId(1L);
     }
 
     @Test
-    void allReservations() {
+    void allReservationsTest() {
         List<ReservationModel> list = new ArrayList<>();
         list.add(reservationModel);
         Mockito.when(reservationRepository.findAll()).thenReturn(list);
 
-        List<ReservationModel> foundReservations = reservationRepository.findAll();
+        List<ReservationModel> foundReservations = reservationService.allReservations();
 
-        assertEquals(1, foundReservations.size());
+        assertEquals(list.size(), foundReservations.size());
         assertEquals(reservationModel, foundReservations.get(0));
     }
 
     @Test
-    void findReservationById() {
+    void findReservationByIdTest() {
         Mockito.when(reservationRepository.findById(1L)).thenReturn(Optional.of(reservationModel));
 
-        Optional<ReservationModel> foundReservation = reservationRepository.findById(1L);
+        ReservationModel foundReservation = reservationService.findReservationById(1L);
 
-        assertEquals(Optional.of(reservationModel), foundReservation);
+        assertEquals(reservationModel, foundReservation);
     }
 
     @Test
-    void createReservation() {
+    void createReservationTest() {
         Mockito.when(reservationRepository.save(reservationModel)).thenReturn(reservationModel);
 
-        ReservationModel createdReservation = reservationRepository.save(reservationModel);
+        ReservationModel createdReservation = reservationService.createReservation(reservationModel);
 
         assertEquals(reservationModel, createdReservation);
         Mockito.verify(reservationRepository).save(reservationModel);
@@ -66,9 +65,10 @@ class ReservationServiceTest {
 
     @Test
     void updateReservationTest() {
+        Mockito.when(reservationRepository.existsById(1L)).thenReturn(true);
         Mockito.when(reservationRepository.save(reservationModel)).thenReturn(reservationModel);
 
-        ReservationModel updatedReservation = reservationRepository.save(reservationModel);
+        ReservationModel updatedReservation = reservationService.updateReservation(reservationModel);
 
         assertEquals(reservationModel, updatedReservation);
         Mockito.verify(reservationRepository).save(reservationModel);
@@ -76,10 +76,12 @@ class ReservationServiceTest {
 
 
     @Test
-    void deleteReservation() {
+    void deleteReservationTest() {
+
+        Mockito.when(reservationRepository.existsById(1L)).thenReturn(true);
         Mockito.doNothing().when(reservationRepository).deleteById(1L);
 
-        reservationRepository.deleteById(1L);
+        reservationService.deleteReservation(1L);
 
         Mockito.verify(reservationRepository).deleteById(1L);
     }
