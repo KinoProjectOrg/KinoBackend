@@ -17,7 +17,7 @@ public class ShowingController {
 
     @GetMapping("/showings")
     public List<ShowingModel> getAllShowings() {
-        return showingService.allShowings();
+        return showingService.getAllShowings();
     }
 
     @GetMapping("/showing/{id}")
@@ -32,7 +32,7 @@ public class ShowingController {
 
     @PostMapping(("/newShowing"))
     public ResponseEntity<ShowingModel> addShowing(@RequestBody ShowingModel showingModel) {
-        if (showingService.allShowings().contains(showingModel)) {
+        if (showingService.getAllShowings().contains(showingModel)) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         } else {
             showingService.createShowing(showingModel);
