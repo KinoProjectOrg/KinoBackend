@@ -1,8 +1,12 @@
 package kino.kinobackend.movie;
 
+import kino.kinobackend.genre.GenreModel;
+import kino.kinobackend.genre.GenreResponse;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.lang.reflect.ParameterizedType;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +67,7 @@ public class MovieServiceImpl implements MovieService {
     public List<MovieModel> getUpcomingMovies() {
 
         return webClient.get()
-                .uri("movie?include_adult=false&include_video=false&language=da&page=1&sort_by=popularity.desc&with_original_language=da&year=2025")
+                .uri("discover/movie?include_adult=false&include_video=false&language=da&page=1&sort_by=popularity.desc&with_original_language=da&year=2025")
                                 // .queryParam("release_date.gte", today)
                                 //.build()
                 .retrieve()
