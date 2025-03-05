@@ -1,6 +1,7 @@
 package kino.kinobackend.reservation;
 
 import jakarta.persistence.*;
+import kino.kinobackend.customer.CustomerModel;
 import kino.kinobackend.seat.SeatModel;
 import kino.kinobackend.showing.ShowingModel;
 import lombok.AllArgsConstructor;
