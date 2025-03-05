@@ -12,4 +12,9 @@ public interface MovieService {
 
     public MovieModel getMovie(int id);
 
+    public MovieModel createMovie(MovieModel movie);
+
+    public MovieModel updateMovie(MovieModel movie);
+
+    public void deleteMovie(int id);
 }
