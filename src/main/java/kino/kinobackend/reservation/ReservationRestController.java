@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/reservation")
+@CrossOrigin("*")
 public class ReservationRestController {
 
     private final ReservationService reservationService;
@@ -56,5 +57,11 @@ public class ReservationRestController {
     public ResponseEntity<List<SeatModel>> getByShowingId(@PathVariable int showingId){
         List<SeatModel> reservedSeats = reservationService.findReservedSeatsByShowingId(showingId);
         return ResponseEntity.status(HttpStatus.OK).body(reservedSeats);
+    }
+
+    @GetMapping("/seatsInShow/{reservationId}")
+    public ResponseEntity<List<SeatModel>> getByReservationId(@PathVariable long reservationId){
+        List<SeatModel> foundReservation = reservationService.getSeatsForScreenByReservationId(reservationId);
+        return ResponseEntity.status(HttpStatus.OK).body(foundReservation);
     }
 }

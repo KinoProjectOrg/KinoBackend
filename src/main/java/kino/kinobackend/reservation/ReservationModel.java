@@ -1,5 +1,6 @@
 package kino.kinobackend.reservation;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import kino.kinobackend.customer.CustomerModel;
 import kino.kinobackend.seat.SeatModel;
@@ -39,6 +40,7 @@ public class ReservationModel {
             joinColumns = @JoinColumn(name = "reservation_id"),
             inverseJoinColumns = @JoinColumn(name = "seat_id")
     )
+    @JsonManagedReference
     private List<SeatModel> seatList;
 
     public void setReservationId(long reservationId) {
