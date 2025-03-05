@@ -8,10 +8,10 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface SeatRepository extends JpaRepository<SeatModel, Integer> {
-    List<SeatModel> findByScreenId(int screenId);
-
-    @Query("SELECT sr.seat.id FROM seat_reservation sr " +
-           "JOIN sr.reservation r " +
-           "WHERE r.showing.id = :showingId")
-    List<Integer> findReservedSeatsIdsByShowingId(@Param("showingId") int showingId);
+//    List<SeatModel> findByScreenId(int screenId);
+//
+//    @Query("SELECT sr.seat_id FROM seat_reservation sr " +
+//           "JOIN sr.reservation r " +
+//           "WHERE r.showing_id = :showingId")
+//    List<Integer> findReservedSeatsIdsByShowingId(@Param("showingId") int showingId);
 }

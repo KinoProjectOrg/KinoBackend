@@ -7,6 +7,7 @@ public class ScreenModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="screen_id")
     private int screenId;
     private int screen_number;
     private int maxRows;

@@ -37,14 +37,14 @@ public class SeatServiceImpl implements SeatService{
         return seat.isReserved();
     }
 
-    @Override
-    public List<SeatModel> getAvailableSeatsForShowing(int showingId, int screenId){
-        List<SeatModel> allSeats = seatRepository.findByScreenId(screenId);
-        List<Integer> reservedSeatIds = seatRepository.findReservedSeatsIdsByShowingId(showingId);
-        return allSeats.stream()
-                .filter(seat -> !reservedSeatIds.contains(seat.getSeatId()))
-                .collect(Collectors.toList());
-    }
+//    @Override
+//    public List<SeatModel> getAvailableSeatsForShowing(int showingId, int screenId){
+//        List<SeatModel> allSeats = seatRepository.findByScreenId(screenId);
+//        List<Integer> reservedSeatIds = seatRepository.findReservedSeatsIdsByShowingId(showingId);
+//        return allSeats.stream()
+//                .filter(seat -> !reservedSeatIds.contains(seat.getSeatId()))
+//                .collect(Collectors.toList());
+//    }
 
     @Override
     public boolean reserveSeat(int seatId){

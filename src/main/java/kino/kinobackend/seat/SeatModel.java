@@ -32,7 +32,7 @@ public class SeatModel {
 
     @ManyToOne
     @JoinColumn(name = "screen_id", referencedColumnName = "screen_id")
-    private ScreenModel screenmodel;
+    private ScreenModel screenId;
 
     @ManyToMany(mappedBy = "seatList")
     private Set<ReservationModel> reservations = new HashSet<>();

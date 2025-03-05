@@ -19,7 +19,7 @@ public class ShowingModel {
 //    @JoinColumn(referencedColumnName = "movieId", nullable = false)
 //    private MovieModel movieModel;
     @ManyToOne
-    @JoinColumn(referencedColumnName = "screenId")
+    @JoinColumn(referencedColumnName = "screen_id")
     private ScreenModel screenModel;
 
 
