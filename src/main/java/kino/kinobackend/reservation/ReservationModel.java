@@ -1,8 +1,8 @@
 package kino.kinobackend.reservation;
 
 import jakarta.persistence.*;
-import kino.kinobackend.showing.ShowingModel;
 import kino.kinobackend.seat.SeatModel;
+import kino.kinobackend.showing.ShowingModel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,7 +20,8 @@ public class ReservationModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long reservation_id;
+    @Column(name = "reservation_id")
+    private long reservationId;
 
     @ManyToOne
     @JoinColumn(name = "show_id")
@@ -28,7 +29,7 @@ public class ReservationModel {
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
-    private Customer customer;
+    private CustomerModel customer;
 
 
     @ManyToMany
@@ -39,5 +40,12 @@ public class ReservationModel {
     )
     private List<SeatModel> seatList;
 
+    public void setReservationId(long reservationId) {
+        this.reservationId = reservationId;
+    }
+
+    public long getReservationId() {
+        return reservationId;
+    }
 
 }

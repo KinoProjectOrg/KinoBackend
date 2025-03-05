@@ -1,92 +1,48 @@
 package kino.kinobackend.movie;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.*;
-import kino.kinobackend.showing.ShowingModel;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class MovieModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int movieId;
+    private int id; // Is set from external api ( themoviedb.org ) ...
     private String title;
-    private String genre;
-    private int min_age;
-    private LocalDate start_date;
-    private LocalDate end_date;
-    private String plot;
-    private boolean isActive;
 
-    @OneToMany(mappedBy = "movie")
-    @JsonBackReference
-    private Set<ShowingModel> shows = new HashSet<ShowingModel>();
+    @JsonProperty("genre_ids")
+    private List<Integer> genreIds;
 
-    public int getMovieId() {
-        return movieId;
-    }
+    private int minAge;
+    private int runtime;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private String overview;
+    @JsonProperty("poster_path") // This is needed to get the string  returned and reckoned as it is named poster_path in Json and if not returns null ...
+    private String posterPath;
 
-    public void setMovieId(int movieId) {
-        this.movieId = movieId;
-    }
+    @JsonProperty("release_date")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate releaseDate;
 
-    public String getTitle() {
-        return title;
-    }
+    private boolean status;
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getGenre() {
-        return genre;
-    }
-
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
-
-    public int getMin_age() {
-        return min_age;
-    }
-
-    public void setMin_age(int min_age) {
-        this.min_age = min_age;
-    }
-
-    public LocalDate getStart_date() {
-        return start_date;
-    }
-
-    public void setStart_date(LocalDate start_date) {
-        this.start_date = start_date;
-    }
-
-    public LocalDate getEnd_date() {
-        return end_date;
-    }
-
-    public void setEnd_date(LocalDate end_date) {
-        this.end_date = end_date;
-    }
-
-    public String getPlot() {
-        return plot;
-    }
-
-    public void setPlot(String plot) {
-        this.plot = plot;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
+    // Overriding the setter for posterPath
+    public void setPosterPath(String path) {
+        this.posterPath = "https://image.tmdb.org/t/p/w500" + path;  // Full path to movie poster img - change the w500 for other sizes...
     }
 }

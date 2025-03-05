@@ -15,9 +15,9 @@ public class ShowingModel {
     private LocalTime start_time;
     private LocalTime end_time;
 
-    @ManyToOne
-    @JoinColumn(referencedColumnName = "movieId", nullable = false)
-    private MovieModel movieModel;
+//    @ManyToOne
+//    @JoinColumn(referencedColumnName = "movieId", nullable = false)
+//    private MovieModel movieModel;
     @ManyToOne
     @JoinColumn(referencedColumnName = "screenId")
     private ScreenModel screenModel;
@@ -47,13 +47,13 @@ public class ShowingModel {
         this.end_time = end_time;
     }
 
-    public MovieModel getMovie() {
-        return movieModel;
-    }
+//    public MovieModel getMovie() {
+//        return movieModel;
+//    }
 
-    public void setMovie(MovieModel movieModel) {
-        this.movieModel = movieModel;
-    }
+//    public void setMovie(MovieModel movieModel) {
+//        this.movieModel = movieModel;
+//    }
 
     public ScreenModel getScreen() {
         return screenModel;
