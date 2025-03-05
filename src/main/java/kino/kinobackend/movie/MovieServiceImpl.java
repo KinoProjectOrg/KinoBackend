@@ -46,9 +46,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<MovieModel> getMovies() {
-        // repo ...
-        List<MovieModel> movies = new ArrayList<>();
-        return movies;
+        return movieRepository.findAll();
     }
 
     /*
@@ -82,8 +80,21 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public MovieModel getMovie(int id) {
+        return movieRepository.findById(id).orElseThrow(IllegalAccessError::new);
+    }
 
-        MovieModel movie = new MovieModel();
-        return movie;
+    @Override
+    public MovieModel createMovie(MovieModel movie) {
+        return movieRepository.save(movie);
+    }
+
+    @Override
+    public MovieModel updateMovie(MovieModel movie) {
+        return movieRepository.save(movie);
+    }
+
+    @Override
+    public void deleteMovie(int id) {
+        movieRepository.deleteById(id);
     }
 }

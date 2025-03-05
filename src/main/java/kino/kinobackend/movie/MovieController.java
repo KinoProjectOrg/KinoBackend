@@ -1,9 +1,9 @@
 package kino.kinobackend.movie;
 
+import lombok.Getter;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -50,5 +50,33 @@ public class MovieController {
             System.out.println("Something is wrong ...");
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/get")
+    public List<MovieModel> getMovies() {
+        return movieServiceImpl.getMovies();
+    }
+
+    @GetMapping("/get/{id}")
+    public ResponseEntity<MovieModel> getMovie(@PathVariable int id) {
+        MovieModel foundMovie = movieServiceImpl.getMovie(id);
+        return ResponseEntity.ok(foundMovie);
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<MovieModel> createMovie(@RequestBody MovieModel movieModel) {
+        MovieModel createdMovie = movieServiceImpl.createMovie(movieModel);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdMovie);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<MovieModel> updateMovie(@RequestBody MovieModel movieModel) {
+        MovieModel updatedMovie = movieServiceImpl.updateMovie(movieModel);
+        return ResponseEntity.ok(updatedMovie);
+    }
+
+    @DeleteMapping("/delete")
+    public void deleteMovie(int id) {
+        movieServiceImpl.deleteMovie(id);
     }
 }
