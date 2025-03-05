@@ -24,21 +24,29 @@ public class SeatServiceImpl implements SeatService{
 
     @Override
     public boolean updateSeat(SeatModel seat) {
+        if(seatRepository.existsById(seat.getSeatId())) {
+            seatRepository.save(seat);
+            return true;
+        }
         return false;
     }
 
     @Override
     public boolean seatStatus(int seatId){
-        return true;
+        SeatModel seat = getSeat(seatId);
+        return seat.isReserved();
     }
 
-    public List<SeatModel> getAvailableSeatsForShowing(int showingId){
-        List<SeatModel> allSeats = seatRepository.findAll(screenId);
+    @Override
+    public List<SeatModel> getAvailableSeatsForShowing(int showingId, int screenId){
+        List<SeatModel> allSeats = seatRepository.findByScreenId(screenId);
         List<Integer> reservedSeatIds = seatRepository.findReservedSeatsIdsByShowingId(showingId);
         return allSeats.stream()
                 .filter(seat -> !reservedSeatIds.contains(seat.getSeatId()))
                 .collect(Collectors.toList());
     }
+
+    @Override
     public boolean reserveSeat(int seatId){
         SeatModel seat = getSeat(seatId);
         if(seat.isReserved()){

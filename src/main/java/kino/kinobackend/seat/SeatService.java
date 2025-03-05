@@ -7,4 +7,6 @@ public interface SeatService {
     SeatModel getSeat(int seatId);
     boolean updateSeat(SeatModel seat);
     boolean seatStatus(int seatId);
+    List<SeatModel> getAvailableSeatsForShowing(int showingId, int screenId);
+    boolean reserveSeat(int seatId);
 }
