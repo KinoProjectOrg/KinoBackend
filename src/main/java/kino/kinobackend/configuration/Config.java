@@ -15,7 +15,7 @@ public class Config {
     @Bean
     public WebClient.Builder webClientBuilder() {
         return WebClient.builder()
-                .baseUrl("https://api.themoviedb.org/3/discover/")
+                .baseUrl("https://api.themoviedb.org/3/")
                 .defaultHeader("accept", "application/json")
                 .defaultHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0YTI2NzQ5ODE0M2Q4Y2NhYmM4NjhjNDM4YTVjYmQ0YyIsIm5iZiI6MTc0MTAwNzkxMS4wNzAwMDAyLCJzdWIiOiI2N2M1YWMyN2EzMjc3YWI0YTFlNzc2ODYiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.KKbGZN2azhKH-wJ93hDjXhKAuKRkwNTWh8MOSncEwrg");
     }
