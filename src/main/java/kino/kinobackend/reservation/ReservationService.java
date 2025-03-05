@@ -1,5 +1,8 @@
 package kino.kinobackend.reservation;
 
+import kino.kinobackend.seat.SeatModel;
+import org.springframework.data.repository.query.Param;
+
 import java.util.List;
 
 public interface ReservationService {
@@ -8,4 +11,6 @@ public interface ReservationService {
     ReservationModel createReservation(ReservationModel reservation);
     ReservationModel updateReservation(ReservationModel reservation);
     void deleteReservation(long id);
+    List<SeatModel> findReservedSeatsByShowingId(int showingId);
+
 }

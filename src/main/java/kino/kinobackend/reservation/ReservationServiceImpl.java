@@ -1,5 +1,7 @@
 package kino.kinobackend.reservation;
 
+import kino.kinobackend.seat.SeatModel;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,5 +45,9 @@ public class ReservationServiceImpl implements ReservationService {
             throw new IllegalArgumentException("Reservation not found with id: " + id);
         }
         reservationRepository.deleteById(id);
+    }
+    @Override
+    public List<SeatModel> findReservedSeatsByShowingId(@Param("showingId") int showingId){
+        return reservationRepository.findReservedSeatsByShowingId(showingId);
     }
 }

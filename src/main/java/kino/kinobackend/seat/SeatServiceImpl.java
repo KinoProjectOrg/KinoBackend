@@ -1,6 +1,8 @@
 package kino.kinobackend.seat;
 
 import org.springframework.stereotype.Service;
+import kino.kinobackend.seat.SeatModel;
+import kino.kinobackend.seat.SeatRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
