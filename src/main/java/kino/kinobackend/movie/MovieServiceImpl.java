@@ -62,10 +62,8 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public List<MovieModel> getUpcomingMovies() {
 
-        LocalDate today = LocalDate.now();
-
         return webClient.get()
-                .uri("/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&primary_release_date.gte=" + today + "&sort_by=primary_release_date.asc")
+                .uri("movie?include_adult=false&include_video=false&language=da&page=1&sort_by=popularity.desc&with_original_language=da&year=2025")
                                 // .queryParam("release_date.gte", today)
                                 //.build()
                 .retrieve()
