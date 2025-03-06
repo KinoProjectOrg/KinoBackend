@@ -33,7 +33,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeModel updateEmployee(int employeeID, EmployeeModel updatedEmployee) {
         if (employeeRepository.existsById(employeeID)) {
-            updatedEmployee.setEmployeeID(employeeID);
+            updatedEmployee.setEmployeeId(employeeID);
             return employeeRepository.save(updatedEmployee);
         }
         throw new RuntimeException("Error.. Could not find employee with ID: " + employeeID);

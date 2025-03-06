@@ -1,5 +1,5 @@
 USE kino;
-INSERT INTO movie_model (id, title, genre_ids, min_age, runtime, start_date, end_date, overview, poster_path, release_date, status)
+INSERT INTO movie_model (movie_id, title, genre_ids, min_age, runtime, start_date, end_date, overview, poster_path, release_date, status)
 VALUES (1, 'Inception', '14,878', 12, 148, '2023-10-01', '2023-10-15', 'A thief who steals corporate secrets...', '/inception.jpg', '2010-07-16', true),
        (2, 'The Dark Knight', '18,28', 12, 152, '2023-10-05', '2023-10-20', 'When the menace known as the Joker emerges...', '/dark_knight.jpg', '2008-07-18', true),
        (3, 'Interstellar', '12,878', 12, 169, '2023-10-10', '2023-10-25', 'A team of explorers travel through a wormhole...', '/interstellar.jpg', '2014-11-07', true);

@@ -23,8 +23,10 @@ public class SeatModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "seat_id")
     private int seatId;
+
     @Column(name = "seat_no")
     private int seatNo;
+
     @Column(name = "seat_row")
     private int seatRow;
 
