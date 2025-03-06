@@ -99,6 +99,8 @@ class ReservationServiceTest {
     void updateReservationTest() {
         Mockito.when(reservationRepository.existsById(1L)).thenReturn(true);
         Mockito.when(reservationRepository.save(reservationModel)).thenReturn(reservationModel);
+        Mockito.when(customerRepository.findById(1L)).thenReturn(Optional.of(customer));
+        Mockito.when(customerRepository.save(Mockito.any(CustomerModel.class))).thenReturn(customer);
 
         ReservationModel updatedReservation = reservationService.updateReservation(reservationModel);
 

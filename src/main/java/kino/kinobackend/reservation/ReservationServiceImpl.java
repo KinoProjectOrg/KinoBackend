@@ -80,6 +80,30 @@ public class ReservationServiceImpl implements ReservationService {
         if (!reservationRepository.existsById(reservation.getReservationId())) {
             throw new IllegalArgumentException("Reservation not found");
         }
+        CustomerModel customer = reservation.getCustomer();
+        if (customer != null) {
+            if (customer.getCustomerId() == 0) {
+                // Create new customer
+                customer = customerRepository.save(customer);
+            } else {
+                // Update existing customer or use a different one
+                CustomerModel existingCustomer = customerRepository.findById(customer.getCustomerId())
+                        .orElseThrow(() -> new RuntimeException("Customer not found with id"));
+
+                // If it's the same customer, update its properties
+                if (existingCustomer.getCustomerId() == reservation.getCustomer().getCustomerId()) {
+                    existingCustomer.setName(customer.getName());
+                    existingCustomer.setEmail(customer.getEmail());
+                    existingCustomer.setPhone(customer.getPhone());
+                    customer = customerRepository.save(existingCustomer);
+                } else {
+                    // Using a different customer, no need to update it
+                    customer = existingCustomer;
+                }
+            }
+            reservation.setCustomer(customer);
+        }
+
         return reservationRepository.save(reservation);
     }
 

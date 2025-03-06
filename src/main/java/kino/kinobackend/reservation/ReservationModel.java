@@ -29,7 +29,6 @@ public class ReservationModel {
 
     @ManyToOne
     @JoinColumn(name = "showing_id")
-    @JsonBackReference
     private ShowingModel showing;
 
     @ManyToOne
