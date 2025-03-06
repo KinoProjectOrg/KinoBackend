@@ -1,7 +1,13 @@
 package kino.kinobackend.reservation;
 
+import kino.kinobackend.customer.CustomerModel;
+import kino.kinobackend.customer.CustomerRepository;
 import kino.kinobackend.screen.ScreenModel;
+import kino.kinobackend.screen.ScreenRepository;
 import kino.kinobackend.seat.SeatModel;
+import kino.kinobackend.seat.SeatRepository;
+import kino.kinobackend.showing.ShowingModel;
+import kino.kinobackend.showing.ShowingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
@@ -11,9 +17,15 @@ import java.util.List;
 public class ReservationServiceImpl implements ReservationService {
 
     private final ReservationRepository reservationRepository;
+    private final SeatRepository seatRepository;
+    private final ShowingRepository showingRepository;
+    private final CustomerRepository customerRepository;
 
-    public ReservationServiceImpl(ReservationRepository reservationRepository) {
+    public ReservationServiceImpl(ReservationRepository reservationRepository, ShowingRepository showingRepository, SeatRepository seatRepository, CustomerRepository customerRepository) {
         this.reservationRepository = reservationRepository;
+        this.showingRepository = showingRepository;
+        this.seatRepository = seatRepository;
+        this.customerRepository = customerRepository;
     }
 
     @Override
@@ -29,6 +41,30 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public ReservationModel createReservation(ReservationModel reservation) {
+        CustomerModel customer = reservation.getCustomer();
+        if (customer.getCustomerId() == 0) {
+            // If no ID is provided, create a new customer
+            customer = customerRepository.save(customer);
+        } else {
+            // If ID is provided, fetch the existing customer
+            customer = customerRepository.findById(customer.getCustomerId())
+                    .orElseThrow(() -> new RuntimeException("Customer not found"));
+        }
+        reservation.setCustomer(customer);
+
+        // Handle Showing
+        ShowingModel showing = showingRepository.findById(reservation.getShowing().getShowingId())
+                .orElseThrow(() -> new RuntimeException("Showing not found"));
+        reservation.setShowing(showing);
+
+        // Handle Seats
+        List<SeatModel> seats = reservation.getSeatList().stream()
+                .map(seat -> seatRepository.findById(seat.getSeatId())
+                        .orElseThrow(() -> new RuntimeException("Seat not found")))
+                .toList();
+        reservation.setSeatList(seats);
+
+        // Save Reservation
         return reservationRepository.save(reservation);
     }
 
@@ -65,4 +101,6 @@ public class ReservationServiceImpl implements ReservationService {
         return reservationRepository.findSeatsByScreenId(screen.getScreenId());
 
     }
+
+
 }

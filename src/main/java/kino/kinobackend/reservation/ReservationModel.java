@@ -27,10 +27,12 @@ public class ReservationModel {
 
     @ManyToOne
     @JoinColumn(name = "showing_id")
+    @JsonManagedReference
     private ShowingModel showing;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
+    @JsonManagedReference
     private CustomerModel customer;
 
 
@@ -42,13 +44,4 @@ public class ReservationModel {
     )
     @JsonManagedReference
     private List<SeatModel> seatList;
-
-    public void setReservationId(long reservationId) {
-        this.reservationId = reservationId;
-    }
-
-    public long getReservationId() {
-        return reservationId;
-    }
-
 }

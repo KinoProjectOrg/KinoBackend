@@ -1,6 +1,8 @@
 package kino.kinobackend.reservation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import kino.kinobackend.customer.CustomerModel;
+import kino.kinobackend.showing.ShowingModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -35,6 +37,18 @@ class ReservationRestControllerTest {
     public void setUp() {
         reservationModel = new ReservationModel();
         reservationModel.setReservationId(1);
+
+        CustomerModel customer = new CustomerModel();
+        customer.setCustomerId(1);
+        reservationModel.setCustomer(customer);
+
+
+        ShowingModel showing = new ShowingModel();
+        showing.setShowingId(1);
+        reservationModel.setShowing(showing);
+
+        // (empty for simplicity)
+        reservationModel.setSeatList(new ArrayList<>());
 
     }
 
