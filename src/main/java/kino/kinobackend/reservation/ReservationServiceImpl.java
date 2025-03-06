@@ -41,23 +41,30 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public ReservationModel createReservation(ReservationModel reservation) {
+
+        //Either creates a customer if its a new one, or add an existing one to the reservation.
         CustomerModel customer = reservation.getCustomer();
         if (customer.getCustomerId() == 0) {
-            // If no ID is provided, create a new customer
+            // if no id is provided, make a new customer
             customer = customerRepository.save(customer);
         } else {
-            // If ID is provided, fetch the existing customer
+            // if id is provided, find the existing customer
             customer = customerRepository.findById(customer.getCustomerId())
                     .orElseThrow(() -> new RuntimeException("Customer not found"));
         }
         reservation.setCustomer(customer);
 
-        // Handle Showing
-        ShowingModel showing = showingRepository.findById(reservation.getShowing().getShowingId())
-                .orElseThrow(() -> new RuntimeException("Showing not found"));
-        reservation.setShowing(showing);
+        // ensures that the showing exist in the database.
+        ShowingModel showing = null;
+        if (reservation.getShowing() != null && reservation.getShowing().getShowingId() > 0) {
+            showing = showingRepository.findById(reservation.getShowing().getShowingId())
+                    .orElseThrow(() -> new RuntimeException("Showing not found"));
+            reservation.setShowing(showing);
+        } else {
+            throw new RuntimeException("Valid showing ID is required");
+        }
 
-        // Handle Seats
+        // makes sure that the seats that is added exist
         List<SeatModel> seats = reservation.getSeatList().stream()
                 .map(seat -> seatRepository.findById(seat.getSeatId())
                         .orElseThrow(() -> new RuntimeException("Seat not found")))
@@ -95,7 +102,7 @@ public class ReservationServiceImpl implements ReservationService {
                 .orElseThrow(() -> new IllegalArgumentException("Reservation not found with id: " + reservationId));
 
         // Get the screen from the showing
-        ScreenModel screen = reservation.getShowing().getScreen();
+        ScreenModel screen = reservation.getShowing().getScreenModel();
 
         // Fetch all seats for the screen
         return reservationRepository.findSeatsByScreenId(screen.getScreenId());

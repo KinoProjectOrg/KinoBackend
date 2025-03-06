@@ -2,6 +2,7 @@ package kino.kinobackend.reservation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kino.kinobackend.customer.CustomerModel;
+import kino.kinobackend.seat.SeatModel;
 import kino.kinobackend.showing.ShowingModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -32,18 +34,22 @@ class ReservationRestControllerTest {
     private MockMvc mockMvc;
 
     ReservationModel reservationModel;
+    CustomerModel customer;
+    ShowingModel showing;
+
+
 
     @BeforeEach
     public void setUp() {
         reservationModel = new ReservationModel();
         reservationModel.setReservationId(1);
 
-        CustomerModel customer = new CustomerModel();
+        customer = new CustomerModel();
         customer.setCustomerId(1);
         reservationModel.setCustomer(customer);
 
 
-        ShowingModel showing = new ShowingModel();
+        showing = new ShowingModel();
         showing.setShowingId(1);
         reservationModel.setShowing(showing);
 
@@ -85,11 +91,11 @@ class ReservationRestControllerTest {
         Mockito.when(reservationService.createReservation(Mockito.any(ReservationModel.class)))
                 .thenReturn(reservationModel);
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        String requestBody = objectMapper.writeValueAsString(reservationModel);
+        ObjectMapper mapper = new ObjectMapper();
+        String requestBody = mapper.writeValueAsString(reservationModel);
 
         mockMvc.perform(post("/reservation/create")
-                .contentType(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.reservationId").value(1));
@@ -102,8 +108,8 @@ class ReservationRestControllerTest {
         Mockito.when(reservationService.updateReservation(Mockito.any(ReservationModel.class)))
                 .thenReturn(reservationModel);
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        String requestBody = objectMapper.writeValueAsString(reservationModel);
+        ObjectMapper mapper = new ObjectMapper();
+        String requestBody = mapper.writeValueAsString(reservationModel);
 
         mockMvc.perform(put("/reservation/update/1")
                 .contentType(MediaType.APPLICATION_JSON)

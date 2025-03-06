@@ -1,6 +1,9 @@
 package kino.kinobackend.showing;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import kino.kinobackend.reservation.ReservationModel;
 import kino.kinobackend.screen.ScreenModel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -36,5 +40,8 @@ public class ShowingModel {
     @JoinColumn(referencedColumnName = "screen_id")
     private ScreenModel screenModel;
 
+    @OneToMany(mappedBy = "showing")
+    @JsonManagedReference
+    private List<ReservationModel> reservations;
 
 }

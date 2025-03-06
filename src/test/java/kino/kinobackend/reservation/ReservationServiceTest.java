@@ -1,5 +1,9 @@
 package kino.kinobackend.reservation;
 
+import kino.kinobackend.customer.CustomerModel;
+import kino.kinobackend.customer.CustomerRepository;
+import kino.kinobackend.showing.ShowingModel;
+import kino.kinobackend.showing.ShowingRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,15 +25,35 @@ class ReservationServiceTest {
     @Mock
     ReservationRepository reservationRepository;
 
+    @Mock
+    CustomerRepository customerRepository;
+
+    @Mock
+    ShowingRepository showingRepository;
+
     @InjectMocks
     ReservationServiceImpl reservationService;
 
     ReservationModel reservationModel;
+    CustomerModel customer;
+    ShowingModel showing;
 
     @BeforeEach
     void setUp() {
         reservationModel = new ReservationModel();
         reservationModel.setReservationId(1L);
+
+        customer = new CustomerModel();
+        customer.setCustomerId(1L);
+        reservationModel.setCustomer(customer);
+
+
+        showing = new ShowingModel();
+        showing.setShowingId(1);
+        reservationModel.setShowing(showing);
+
+        // (empty for simplicity)
+        reservationModel.setSeatList(new ArrayList<>());
     }
 
     @Test
@@ -55,12 +79,20 @@ class ReservationServiceTest {
 
     @Test
     void createReservationTest() {
-        Mockito.when(reservationRepository.save(reservationModel)).thenReturn(reservationModel);
+        Mockito.when(customerRepository.findById(1L)).thenReturn(Optional.of(customer));
+        Mockito.when(showingRepository.findById(1)).thenReturn(Optional.of(showing));
+        Mockito.when(reservationRepository.save(Mockito.any(ReservationModel.class))).thenReturn(reservationModel);
 
+        // Call the method under test
         ReservationModel createdReservation = reservationService.createReservation(reservationModel);
 
+        // Assertions
         assertEquals(reservationModel, createdReservation);
-        Mockito.verify(reservationRepository).save(reservationModel);
+
+        // Verify interactions
+        Mockito.verify(customerRepository).findById(1L);
+        Mockito.verify(showingRepository).findById(1);
+        Mockito.verify(reservationRepository).save(Mockito.any(ReservationModel.class));
     }
 
     @Test
