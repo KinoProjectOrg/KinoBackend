@@ -33,13 +33,13 @@ public class ShowingModel {
     private LocalDate date;
 
     @ManyToOne
-    @JoinColumn(name = "movie_id", referencedColumnName = "movie_id", nullable = false) // movie_id er fk
-    private MovieModel movieModel;
-
-    @ManyToOne
-    @JoinColumn(referencedColumnName = "screen_id")
+    @JoinColumn(referencedColumnName = "screen_id") // fk
     @JsonManagedReference
     private ScreenModel screenModel;
+
+    @ManyToOne
+    @JoinColumn(name = "movie_id", referencedColumnName = "movie_id", nullable = false) // movie_id er fk
+    private MovieModel movieModel;
 
     @OneToMany(mappedBy = "showing", cascade = CascadeType.ALL) // reservation er over showing
     @JsonBackReference

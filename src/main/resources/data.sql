@@ -9,6 +9,8 @@ VALUES
     (1, 1, 20, 12),
     (2, 2, 25, 16);
 
+DROP PROCEDURE IF EXISTS InsertSeatsForScreen1;
+
 DELIMITER //
 CREATE PROCEDURE InsertSeatsForScreen1()
 BEGIN
@@ -28,6 +30,8 @@ DELIMITER ;
 
 -- Call the procedure to insert seats for screen_id = 1
 CALL InsertSeatsForScreen1();
+
+DROP PROCEDURE IF EXISTS InsertSeatsForScreen2;
 
 -- Insert seats for screen_id = 2 (25 rows, 16 seats per row)
 DELIMITER //
@@ -50,7 +54,7 @@ DELIMITER ;
 -- Call the procedure to insert seats for screen_id = 2
 CALL InsertSeatsForScreen2();
 
-INSERT INTO showing_model (showing_id, start_time, date, screen_id, movie_id)
+INSERT INTO showing_model (showing_id, start_time, date, screen_model_screen_id, movie_id)
 VALUES
     (1, '14:00:00', '2025-09-28', 1, 1),
     (2, '17:00:00', '2025-12-30', 2, 2),
