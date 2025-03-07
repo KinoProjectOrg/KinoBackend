@@ -150,7 +150,7 @@ class ReservationRestControllerTest {
         SeatModel seatModel = new SeatModel();
         seatModel.setSeatId(1);
         seats.add(seatModel);
-        Mockito.when(reservationService.getSeatsForScreenByReservationId(1)).thenReturn(seats);
+        Mockito.when(reservationService.findSeatsByShowingId(1)).thenReturn(seats);
 
         mockMvc.perform(get("/reservation/seatsInShow/1")
                 .contentType(MediaType.APPLICATION_JSON))

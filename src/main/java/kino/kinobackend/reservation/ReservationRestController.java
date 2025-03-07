@@ -60,9 +60,9 @@ public class ReservationRestController {
         return ResponseEntity.status(HttpStatus.OK).body(reservedSeats);
     }
 
-    @GetMapping("/seatsInShow/{reservationId}")
-    public ResponseEntity<List<SeatModel>> getByReservationId(@PathVariable long reservationId){
-        List<SeatModel> foundReservation = reservationService.getSeatsForScreenByReservationId(reservationId);
+    @GetMapping("/seatsInShow/{showingId}")
+    public ResponseEntity<List<SeatModel>> findAllSeatsByShowingId(@PathVariable int showingId){
+        List<SeatModel> foundReservation = reservationService.findSeatsByShowingId(showingId);
         return ResponseEntity.status(HttpStatus.OK).body(foundReservation);
     }
 }

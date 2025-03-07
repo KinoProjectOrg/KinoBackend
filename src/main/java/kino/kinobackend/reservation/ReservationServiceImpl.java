@@ -121,15 +121,9 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<SeatModel> getSeatsForScreenByReservationId(long reservationId) {
-        ReservationModel reservation = reservationRepository.findById(reservationId)
-                .orElseThrow(() -> new IllegalArgumentException("Reservation not found with id: " + reservationId));
+    public List<SeatModel> findSeatsByShowingId(int showingId) {
 
-        // Get the screen from the showing
-        ScreenModel screen = reservation.getShowing().getScreenModel();
-
-        // Fetch all seats for the screen
-        return reservationRepository.findSeatsByScreenId(screen.getScreenId());
+        return reservationRepository.findSeatsByShowingId(showingId);
 
     }
 
