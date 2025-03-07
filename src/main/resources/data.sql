@@ -9,17 +9,46 @@ VALUES
     (1, 1, 20, 12),
     (2, 2, 25, 16);
 
-INSERT INTO seat_model (seat_id, seat_no, seat_row, is_reserved, screen_id)
-VALUES
-    (1, 1, 1, false, 1),
-    (2, 2, 1, false, 1),
-    (3, 3, 1, false, 1),
-    (4, 1, 2, false, 1),
-    (5, 2, 2, false, 1),
-    (6, 1, 1, false, 2),
-    (7, 2, 1, false, 2),
-    (8, 1, 2, false, 2),
-    (9, 2, 2, false, 2);
+DELIMITER //
+CREATE PROCEDURE InsertSeatsForScreen1()
+BEGIN
+    DECLARE seat_row INT DEFAULT 1;
+    DECLARE seat INT DEFAULT 1;
+    WHILE seat_row <= 20 DO
+        WHILE seat <= 12 DO
+            INSERT INTO seat_model (seat_no, seat_row, is_reserved, screen_id)
+            VALUES (seat, seat_row, false, 1);
+            SET seat = seat + 1;
+END WHILE;
+        SET seat = 1;
+        SET seat_row = seat_row + 1;
+END WHILE;
+END //
+DELIMITER ;
+
+-- Call the procedure to insert seats for screen_id = 1
+CALL InsertSeatsForScreen1();
+
+-- Insert seats for screen_id = 2 (25 rows, 16 seats per row)
+DELIMITER //
+CREATE PROCEDURE InsertSeatsForScreen2()
+BEGIN
+    DECLARE seat_row INT DEFAULT 1;
+    DECLARE seat INT DEFAULT 1;
+    WHILE seat_row <= 25 DO
+        WHILE seat <= 16 DO
+            INSERT INTO seat_model (seat_no, seat_row, is_reserved, screen_id)
+            VALUES (seat, seat_row, false, 2);
+            SET seat = seat + 1;
+END WHILE;
+        SET seat = 1;
+        SET seat_row = seat_row + 1;
+END WHILE;
+END //
+DELIMITER ;
+
+-- Call the procedure to insert seats for screen_id = 2
+CALL InsertSeatsForScreen2();
 
 INSERT INTO showing_model (showing_id, start_time, end_time, screen_model_screen_id)
 VALUES
