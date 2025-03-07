@@ -51,6 +51,9 @@ public class MovieModel {
 
     private boolean status;
 
+    // add a list of genres to work from from the comma seperated string. Don't add to database!!!
+
+
     // Overriding the setter for posterPath
     public void setPosterPath(String path) {
         this.posterPath = "https://image.tmdb.org/t/p/w500" + path;  // Full path to movie poster img - change the w500 for other sizes...
