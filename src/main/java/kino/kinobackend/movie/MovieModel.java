@@ -1,14 +1,17 @@
 package kino.kinobackend.movie;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import kino.kinobackend.genre.GenreModel;
+import kino.kinobackend.showing.ShowingModel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,12 +25,13 @@ import lombok.Setter;
 public class MovieModel {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="movie_id")
     private int movieId; // Is set from external api ( themoviedb.org ) ...
     private String title;
 
     @JsonProperty("genre_ids")
-    private List<Integer> genreIds;
+    private String genreIds;
 
     @Column(name="min_age")
     private int minAge;
@@ -50,6 +54,19 @@ public class MovieModel {
     private LocalDate releaseDate;
 
     private boolean status;
+
+    @OneToMany(mappedBy = "movieModel", cascade = CascadeType.ALL)
+    @JsonBackReference
+    private List<ShowingModel> showingModels = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "movie_genre",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id")
+    )
+    @JsonManagedReference
+    private List<GenreModel> genreList;
 
     // Overriding the setter for posterPath
     public void setPosterPath(String path) {
