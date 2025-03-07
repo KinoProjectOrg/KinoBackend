@@ -127,4 +127,35 @@ class ReservationRestControllerTest {
                 contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
     }
+
+    @Test
+    void getByShowingIdTest() throws Exception{
+        List<SeatModel> seats = new ArrayList<>();
+        SeatModel seatModel = new SeatModel();
+        seatModel.setSeatId(1);
+        seats.add(seatModel);
+
+        Mockito.when(reservationService.findReservedSeatsByShowingId(1)).thenReturn(seats);
+
+        mockMvc.perform(get("/reservation/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1));
+
+    }
+
+    @Test
+    void getByReservationIdTest() throws Exception{
+        List<SeatModel> seats = new ArrayList<>();
+        SeatModel seatModel = new SeatModel();
+        seatModel.setSeatId(1);
+        seats.add(seatModel);
+        Mockito.when(reservationService.getSeatsForScreenByReservationId(1)).thenReturn(seats);
+
+        mockMvc.perform(get("/reservation/seatsInShow/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1));
+
+    }
 }
