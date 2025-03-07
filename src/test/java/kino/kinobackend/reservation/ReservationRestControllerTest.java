@@ -1,6 +1,9 @@
 package kino.kinobackend.reservation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import kino.kinobackend.customer.CustomerModel;
+import kino.kinobackend.seat.SeatModel;
+import kino.kinobackend.showing.ShowingModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -9,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -30,11 +34,27 @@ class ReservationRestControllerTest {
     private MockMvc mockMvc;
 
     ReservationModel reservationModel;
+    CustomerModel customer;
+    ShowingModel showing;
+
+
 
     @BeforeEach
     public void setUp() {
         reservationModel = new ReservationModel();
         reservationModel.setReservationId(1);
+
+        customer = new CustomerModel();
+        customer.setCustomerId(1);
+        reservationModel.setCustomer(customer);
+
+
+        showing = new ShowingModel();
+        showing.setShowingId(1);
+        reservationModel.setShowing(showing);
+
+        // (empty for simplicity)
+        reservationModel.setSeatList(new ArrayList<>());
 
     }
 
@@ -71,11 +91,11 @@ class ReservationRestControllerTest {
         Mockito.when(reservationService.createReservation(Mockito.any(ReservationModel.class)))
                 .thenReturn(reservationModel);
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        String requestBody = objectMapper.writeValueAsString(reservationModel);
+        ObjectMapper mapper = new ObjectMapper();
+        String requestBody = mapper.writeValueAsString(reservationModel);
 
         mockMvc.perform(post("/reservation/create")
-                .contentType(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.reservationId").value(1));
@@ -88,8 +108,8 @@ class ReservationRestControllerTest {
         Mockito.when(reservationService.updateReservation(Mockito.any(ReservationModel.class)))
                 .thenReturn(reservationModel);
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        String requestBody = objectMapper.writeValueAsString(reservationModel);
+        ObjectMapper mapper = new ObjectMapper();
+        String requestBody = mapper.writeValueAsString(reservationModel);
 
         mockMvc.perform(put("/reservation/update/1")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -106,5 +126,36 @@ class ReservationRestControllerTest {
         mockMvc.perform(delete("/reservation/delete/1").
                 contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void getByShowingIdTest() throws Exception{
+        List<SeatModel> seats = new ArrayList<>();
+        SeatModel seatModel = new SeatModel();
+        seatModel.setSeatId(1);
+        seats.add(seatModel);
+
+        Mockito.when(reservationService.findReservedSeatsByShowingId(1)).thenReturn(seats);
+
+        mockMvc.perform(get("/reservation/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1));
+
+    }
+
+    @Test
+    void getByReservationIdTest() throws Exception{
+        List<SeatModel> seats = new ArrayList<>();
+        SeatModel seatModel = new SeatModel();
+        seatModel.setSeatId(1);
+        seats.add(seatModel);
+        Mockito.when(reservationService.getSeatsForScreenByReservationId(1)).thenReturn(seats);
+
+        mockMvc.perform(get("/reservation/seatsInShow/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1));
+
     }
 }

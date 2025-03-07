@@ -23,10 +23,4 @@ public class CustomerModel {
     private String email;
     private String phone;
 
-    public void setCustomerId(long customerId) {
-        this.customerId = customerId;
-    }
-    public long getCustomerId() {
-        return customerId;
-    }
 }
