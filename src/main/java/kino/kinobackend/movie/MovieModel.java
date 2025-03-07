@@ -27,7 +27,7 @@ public class MovieModel {
     private String title;
 
     @JsonProperty("genre_ids")
-    private List<Integer> genreIds;
+    private String genreId; // returns a comma seperated list of numbers each aqual to an int in genre table
 
     @Column(name="min_age")
     private int minAge;
