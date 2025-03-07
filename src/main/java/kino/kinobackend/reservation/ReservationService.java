@@ -12,6 +12,6 @@ public interface ReservationService {
     ReservationModel updateReservation(ReservationModel reservation);
     void deleteReservation(long id);
     List<SeatModel> findReservedSeatsByShowingId(int showingId);
-    List<SeatModel> getSeatsForScreenByReservationId(long reservationId);
+    List<SeatModel> findSeatsByShowingId(int showingId);
 
 }
