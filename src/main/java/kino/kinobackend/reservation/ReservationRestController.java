@@ -14,9 +14,9 @@ import java.util.List;
 @CrossOrigin("*")
 public class ReservationRestController {
 
-    private final ReservationService reservationService;
+    private final ReservationServiceImpl reservationService;
 
-    public ReservationRestController(ReservationService reservationService) {
+    public ReservationRestController(ReservationServiceImpl reservationService) {
         this.reservationService = reservationService;
     }
 

@@ -1,5 +1,6 @@
 package kino.kinobackend.customer;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import kino.kinobackend.reservation.ReservationModel;
 import lombok.AllArgsConstructor;
@@ -27,6 +28,7 @@ public class CustomerModel {
     private String phone;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @JsonBackReference
     private List<ReservationModel> reservations;
 
 }

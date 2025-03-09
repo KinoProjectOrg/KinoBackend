@@ -25,7 +25,6 @@ public class ReservationModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "reservation_id")
-    @JsonManagedReference
     private long reservationId;
 
     @ManyToOne
