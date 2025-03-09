@@ -25,14 +25,17 @@ public class ReservationModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "reservation_id")
+    @JsonManagedReference
     private long reservationId;
 
     @ManyToOne
     @JoinColumn(name = "showing_id")
+    @JsonManagedReference
     private ShowingModel showing;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
+    @JsonManagedReference
     private CustomerModel customer;
 
     @ManyToMany

@@ -81,3 +81,6 @@ public class MovieController {
         movieServiceImpl.deleteMovie(id);
     }
 }
+
+  /*  @GetMapping("/genre")*/
+
