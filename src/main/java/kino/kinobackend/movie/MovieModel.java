@@ -1,6 +1,8 @@
 package kino.kinobackend.movie;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDate;
@@ -11,6 +13,9 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Transient;
+import jakarta.persistence.*;
+import kino.kinobackend.genre.GenreModel;
+import kino.kinobackend.showing.ShowingModel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -57,6 +62,19 @@ public class MovieModel {
     // add a list of genres to work from the comma seperated string. Isn't and shouldn't be added to database ...
     @Transient
     private List<String> genreNames = new ArrayList<>();
+
+//    @OneToMany(mappedBy = "movieModel", cascade = CascadeType.ALL)
+//    @JsonBackReference
+//    private List<ShowingModel> showingModels = new ArrayList<>();
+//
+//    @ManyToMany
+//    @JoinTable(
+//            name = "movie_genre",
+//            joinColumns = @JoinColumn(name = "movie_id"),
+//            inverseJoinColumns = @JoinColumn(name = "genre_id")
+//    )
+//    @JsonManagedReference
+//    private List<GenreModel> genreList;
 
     // Overriding the setter for posterPath
     public void setPosterPath(String path) {
