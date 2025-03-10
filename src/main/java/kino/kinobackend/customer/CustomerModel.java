@@ -1,6 +1,8 @@
 package kino.kinobackend.customer;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import kino.kinobackend.reservation.ReservationModel;
 import lombok.AllArgsConstructor;
@@ -28,7 +30,7 @@ public class CustomerModel {
     private String phone;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-    @JsonBackReference
+    @JsonIgnore
     private List<ReservationModel> reservations;
 
 }
