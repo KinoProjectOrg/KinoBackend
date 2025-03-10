@@ -43,4 +43,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void deleteEmployee(int employeeID) {
         employeeRepository.deleteById(employeeID);
     }
+
+    @Override
+    public Optional<EmployeeModel> getEmployeeByName(String username) {
+        return employeeRepository.findByUsername(username);
+    }
 }
