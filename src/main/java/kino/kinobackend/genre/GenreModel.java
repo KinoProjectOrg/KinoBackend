@@ -26,8 +26,8 @@ public class GenreModel {
     @Column (name = "genre_name")
     private String name;
 
-    @ManyToMany(mappedBy = "genreList")
-    @JsonBackReference
-    private Set<MovieModel> movies = new HashSet<>();
+//    @ManyToMany(mappedBy = "genreList")
+//    @JsonBackReference
+//    private Set<MovieModel> movies = new HashSet<>();
 
 }

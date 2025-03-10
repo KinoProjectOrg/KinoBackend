@@ -63,18 +63,18 @@ public class MovieModel {
     @Transient
     private List<String> genreNames = new ArrayList<>();
 
-    @OneToMany(mappedBy = "movieModel", cascade = CascadeType.ALL)
-    @JsonBackReference
-    private List<ShowingModel> showingModels = new ArrayList<>();
-
-    @ManyToMany
-    @JoinTable(
-            name = "movie_genre",
-            joinColumns = @JoinColumn(name = "movie_id"),
-            inverseJoinColumns = @JoinColumn(name = "genre_id")
-    )
-    @JsonManagedReference
-    private List<GenreModel> genreList;
+//    @OneToMany(mappedBy = "movieModel", cascade = CascadeType.ALL)
+//    @JsonBackReference
+//    private List<ShowingModel> showingModels = new ArrayList<>();
+//
+//    @ManyToMany
+//    @JoinTable(
+//            name = "movie_genre",
+//            joinColumns = @JoinColumn(name = "movie_id"),
+//            inverseJoinColumns = @JoinColumn(name = "genre_id")
+//    )
+//    @JsonManagedReference
+//    private List<GenreModel> genreList;
 
     // Overriding the setter for posterPath
     public void setPosterPath(String path) {
