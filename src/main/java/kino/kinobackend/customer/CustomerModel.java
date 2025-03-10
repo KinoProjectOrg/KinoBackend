@@ -1,13 +1,10 @@
 package kino.kinobackend.customer;
 
 import jakarta.persistence.*;
-import kino.kinobackend.reservation.ReservationModel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @Setter
 @Getter
@@ -25,8 +22,5 @@ public class CustomerModel {
     private String name;
     private String email;
     private String phone;
-
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-    private List<ReservationModel> reservations;
 
 }

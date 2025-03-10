@@ -35,6 +35,7 @@ public class ReservationModel {
     @JoinColumn(name = "customer_id")
     private CustomerModel customer;
 
+
     @ManyToMany
     @JoinTable(
             name = "seat_reservation",

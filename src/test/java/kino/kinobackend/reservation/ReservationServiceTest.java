@@ -139,10 +139,11 @@ class ReservationServiceTest {
     }
 
     @Test
-    void findSeatsByShowingIdTest(){
-        Mockito.when(reservationRepository.findSeatsByShowingId(1)).thenReturn(reservationModel.getSeatList());
+    void getSeatsForScreenByReservationIdTest(){
+        Mockito.when(reservationRepository.findById(1L)).thenReturn(Optional.of(reservationModel));
+        Mockito.when(reservationRepository.findSeatsByScreenId(1)).thenReturn(reservationModel.getSeatList());
 
-        List<SeatModel> seats = reservationService.findSeatsByShowingId(1);
+        List<SeatModel> seats = reservationService.getSeatsForScreenByReservationId(1L);
 
         assertEquals(reservationModel.getSeatList().size(), seats.size());
     }
