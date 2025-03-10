@@ -4,11 +4,13 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,11 +25,11 @@ public class MovieModel {
 
     @Id
     @Column(name="movie_id")
-    private int movieId; // Is set from external api ( themoviedb.org ) ...
+    private int id; // Is set from external api ( themoviedb.org ) ...
     private String title;
 
     @JsonProperty("genre_ids")
-    private String genreId; // returns a comma seperated list of numbers each aqual to an int in genre table
+    private List<Integer> genreIds;
 
     @Column(name="min_age")
     private int minAge;
@@ -40,6 +42,7 @@ public class MovieModel {
     @Column(name="end_date")
     private LocalDate endDate;
 
+    @Column(length=2000)
     private String overview;
     
     @JsonProperty("poster_path") // This is needed to get the string  returned and reckoned as it is named poster_path in Json and if not returns null ...
@@ -51,8 +54,9 @@ public class MovieModel {
 
     private boolean status;
 
-    // add a list of genres to work from from the comma seperated string. Don't add to database!!!
-
+    // add a list of genres to work from the comma seperated string. Isn't and shouldn't be added to database ...
+    @Transient
+    private List<String> genreNames = new ArrayList<>();
 
     // Overriding the setter for posterPath
     public void setPosterPath(String path) {
