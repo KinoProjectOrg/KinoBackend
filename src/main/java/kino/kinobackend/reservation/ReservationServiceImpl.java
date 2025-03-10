@@ -21,6 +21,7 @@ public class ReservationServiceImpl implements ReservationService {
     private final ShowingRepository showingRepository;
     private final CustomerRepository customerRepository;
 
+
     public ReservationServiceImpl(ReservationRepository reservationRepository, ShowingRepository showingRepository, SeatRepository seatRepository, CustomerRepository customerRepository) {
         this.reservationRepository = reservationRepository;
         this.showingRepository = showingRepository;
@@ -92,9 +93,10 @@ public class ReservationServiceImpl implements ReservationService {
 
                 // If it's the same customer, update its properties
                 if (existingCustomer.getCustomerId() == reservation.getCustomer().getCustomerId()) {
-                    existingCustomer.setName(customer.getName());
-                    existingCustomer.setEmail(customer.getEmail());
-                    existingCustomer.setPhone(customer.getPhone());
+                      existingCustomer.setUsername(customer.getUsername());
+//                    existingCustomer.setName(customer.getName());
+//                    existingCustomer.setEmail(customer.getEmail());
+//                    existingCustomer.setPhone(customer.getPhone());
                     customer = customerRepository.save(existingCustomer);
                 } else {
                     // Using a different customer, no need to update it
