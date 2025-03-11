@@ -3,6 +3,7 @@ package kino.kinobackend.customer;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import kino.kinobackend.reservation.ReservationModel;
 import lombok.AllArgsConstructor;

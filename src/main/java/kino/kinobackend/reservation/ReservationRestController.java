@@ -14,9 +14,9 @@ import java.util.List;
 @CrossOrigin("*")
 public class ReservationRestController {
 
-    private final ReservationServiceImpl reservationService;
+    private final ReservationService reservationService;
 
-    public ReservationRestController(ReservationServiceImpl reservationService) {
+    public ReservationRestController(ReservationService reservationService) {
         this.reservationService = reservationService;
     }
 
@@ -34,6 +34,9 @@ public class ReservationRestController {
     @PostMapping("/create")
     public ResponseEntity<ReservationModel> create(@RequestBody ReservationModel reservationModel){
         ReservationModel createdReservation = reservationService.createReservation(reservationModel);
+        if (reservationModel.getCustomer() == null) {
+            System.out.println("Can not find customer");
+        }
         return ResponseEntity.status(HttpStatus.CREATED).body(createdReservation);
     }
 

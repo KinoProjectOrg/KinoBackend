@@ -30,12 +30,12 @@ public class ReservationModel {
 
     @ManyToOne
     @JoinColumn(name = "showing_id")
-    @JsonManagedReference
+    @JsonIgnore
     private ShowingModel showing;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
-    @JsonManagedReference
+    @JsonIgnore
     private CustomerModel customer;
 
     @ManyToMany
@@ -44,6 +44,6 @@ public class ReservationModel {
             joinColumns = @JoinColumn(name = "reservation_id"),
             inverseJoinColumns = @JoinColumn(name = "seat_id")
     )
-    @JsonIgnoreProperties("reservations")
+    @JsonIgnore
     private List<SeatModel> seatList;
 }

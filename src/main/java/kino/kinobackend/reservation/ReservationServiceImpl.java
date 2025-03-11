@@ -44,6 +44,9 @@ public class ReservationServiceImpl implements ReservationService {
 
         //Either creates a customer if its a new one, or add an existing one to the reservation.
         CustomerModel customer = reservation.getCustomer();
+        if (customer == null) {
+            throw new IllegalArgumentException("Customer cannot be null");
+        }
         if (customer.getCustomerId() == 0) {
             // if no id is provided, make a new customer
             customer = customerRepository.save(customer);
