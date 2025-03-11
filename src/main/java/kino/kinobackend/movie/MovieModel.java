@@ -63,10 +63,10 @@ public class MovieModel {
     @Transient
     private List<String> genreNames = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "movieModel", cascade = CascadeType.ALL)
-//    @JsonBackReference
-//    private List<ShowingModel> showingModels = new ArrayList<>();
-//
+    @OneToMany(mappedBy = "movieModel", cascade = CascadeType.ALL)
+    @JsonBackReference
+    private List<ShowingModel> showingModels = new ArrayList<>();
+
 //    @ManyToMany
 //    @JoinTable(
 //            name = "movie_genre",
