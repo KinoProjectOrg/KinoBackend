@@ -1,9 +1,6 @@
 package kino.kinobackend.movie;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -63,10 +60,11 @@ public class MovieModel {
     @Transient
     private List<String> genreNames = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "movieModel", cascade = CascadeType.ALL)
-//    @JsonBackReference
-//    private List<ShowingModel> showingModels = new ArrayList<>();
-//
+    @OneToMany(mappedBy = "movieModel", cascade = CascadeType.ALL)
+    @JsonBackReference
+    @JsonIgnore
+    private List<ShowingModel> showingModels = new ArrayList<>();
+
 //    @ManyToMany
 //    @JoinTable(
 //            name = "movie_genre",
