@@ -30,6 +30,9 @@ public class MovieModel {
     private int id; // Is set from external api ( themoviedb.org ) ...
     private String title;
 
+    //@JsonProperty("genre_ids")
+    //private List<Integer> genreIds;
+
     @Column(name="min_age")
     private int minAge;
 

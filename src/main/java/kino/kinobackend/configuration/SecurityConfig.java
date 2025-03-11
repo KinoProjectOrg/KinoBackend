@@ -34,7 +34,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login", "/registerEmployee", "/registerCustomer",
                                 "/reservation/**", "/movies/**", "/customer/**", "/employee/**"
-                        , "/screen/**", "/showing/**", "/reservation/create").permitAll() // disse sider er åbne for ALLE
+                        , "/screen/**", "/showings/**", "/reservation/create","/showing/**").permitAll() // disse sider er åbne for ALLE
                         //.requestMatchers("/customer/**").hasRole("USER") // kun til kunder
 //                        .requestMatchers("/reservation/**").hasRole("USER")
                         .requestMatchers("/admin/**").hasRole("ADMIN")
