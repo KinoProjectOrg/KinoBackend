@@ -37,7 +37,8 @@ public class SecurityConfig {
 //                        .requestMatchers("/reservation/**").hasRole("USER")
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/filmoperator/**").hasRole("FILM_OPERATOR")
-                        .anyRequest().authenticated() // Alle andre endpoints kræver autentifikation. Den er muligvis unødvendig??
+                        .requestMatchers("/tool/fetch/**").permitAll()
+//                        .anyRequest().authenticated() // Alle andre endpoints kræver autentifikation. Den er muligvis unødvendig??
                 );
         return http.build();
     }
