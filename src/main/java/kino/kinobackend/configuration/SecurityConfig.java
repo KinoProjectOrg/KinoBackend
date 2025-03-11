@@ -32,8 +32,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/registerEmployee", "/registerCustomer").permitAll() // disse sider er åbne for ALLE
-                        .requestMatchers("/customer/**").hasRole("USER") // kun til kunder
+                        .requestMatchers("/login", "/registerEmployee", "/registerCustomer",
+                                "/reservation/**", "/movies/**", "/customer/**", "/employee/**"
+                        , "/screen/**", "/showing/**", "/reservation/create").permitAll() // disse sider er åbne for ALLE
+                        //.requestMatchers("/customer/**").hasRole("USER") // kun til kunder
 //                        .requestMatchers("/reservation/**").hasRole("USER")
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/filmoperator/**").hasRole("FILM_OPERATOR")

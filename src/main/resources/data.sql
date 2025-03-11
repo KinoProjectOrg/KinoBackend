@@ -79,6 +79,16 @@ VALUES
     (2, 6),
     (2, 7);
 
+
+INSERT INTO employee (name, password, role)
+VALUES ('Jens', '$2a$10$rPiEAgQNIT1TCoKi.XaLUeK1dAqHHCVJ0HUWv4.jWz9n8Z1lwHuMm', 'ADMIN');
+
+INSERT INTO employee (name, password, role)
+VALUES ('Bo', '$2a$10$rPiEAgQNIT1TCoKi.XaLUeK1dAqHHCVJ0HUWv4.jWz9n8Z1lwHuMm', 'FILM_OPERATOR');
+
+INSERT INTO employee (name, password, role)
+VALUES ('Sasha', '$2a$10$rPiEAgQNIT1TCoKi.XaLUeK1dAqHHCVJ0HUWv4.jWz9n8Z1lwHuMm', 'ADMIN');
+
 INSERT INTO genre_model (genre_id, genre_name)
 VALUES
     (1, "Horror"),

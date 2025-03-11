@@ -31,7 +31,7 @@ public class ReservationRestController {
          return ResponseEntity.status(HttpStatus.OK).body(foundReservation);
     }
 
-    @PostMapping("/create")
+    @PostMapping(value = "/create", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ReservationModel> create(@RequestBody ReservationModel reservationModel){
         ReservationModel createdReservation = reservationService.createReservation(reservationModel);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdReservation);

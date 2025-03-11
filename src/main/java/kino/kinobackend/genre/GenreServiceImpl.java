@@ -37,7 +37,7 @@ public class GenreServiceImpl implements GenreService {
     public void addGenrestoGenreListByMovie(MovieModel movie) {
 
         // Get get specific movie's list of genreIds ...
-        List<Integer> ids = movie.getGenreIds();
+        List<Integer> ids = movie.getGenreNames();
         // get genres directly from external api ...
         List<GenreModel> genres = fetchAllGenres();
 //        // Alternative: get genres from local database ...
@@ -47,7 +47,7 @@ public class GenreServiceImpl implements GenreService {
         for(int genreId : ids) {
             for(GenreModel genre : genres) {
                 if(genre.getId() == genreId) {
-                    movie.getGenreNames().add(genre.getName());
+                    movie.getGenreNames().add(genre.getId());
                 }
             }
         }
