@@ -1,6 +1,7 @@
 package kino.kinobackend.screen;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import kino.kinobackend.seat.SeatModel;
 import kino.kinobackend.showing.ShowingModel;

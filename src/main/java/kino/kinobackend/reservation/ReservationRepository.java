@@ -21,4 +21,5 @@ public interface ReservationRepository extends JpaRepository<ReservationModel, L
             nativeQuery = true)
     List<SeatModel> findSeatsByShowingId(@Param("showingId") int showingId);
 
+
 }

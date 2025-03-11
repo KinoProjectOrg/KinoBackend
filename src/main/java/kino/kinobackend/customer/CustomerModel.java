@@ -31,7 +31,7 @@ public class CustomerModel {
     private String phone;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-    @JsonIgnore
+    @JsonBackReference
     private List<ReservationModel> reservations;
 
 }
