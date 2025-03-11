@@ -27,11 +27,13 @@ public class MovieModel {
 
     @Id
     @Column(name="movie_id")
+    @JsonProperty("id")
     private int id; // Is set from external api ( themoviedb.org ) ...
+
     private String title;
 
-    //@JsonProperty("genre_ids")
-    //private List<Integer> genreIds;
+    @JsonProperty("genre_ids")
+    private List<Integer> genreIds;
 
     @Column(name="min_age")
     private int minAge;
@@ -57,11 +59,12 @@ public class MovieModel {
     private boolean status;
 
     // add a list of genres to work from the comma seperated string. Isn't and shouldn't be added to database ...
-    @ElementCollection
-    @CollectionTable(name = "movie_genres", joinColumns = @JoinColumn(name = "movie_id"))
-    @Column(name = "genre_id")
-    private List<Integer> genreNames;
-
+   // @ElementCollection
+    //@CollectionTable(name = "movie_genres", joinColumns = @JoinColumn(name = "movie_id"))
+    //@Column(name = "genre_id")
+    //private List<Integer> genreNames;
+    @Transient
+    private List<String> genreNames = new ArrayList<>();
 
     @OneToMany(mappedBy = "movieModel", cascade = CascadeType.ALL)
     @JsonBackReference

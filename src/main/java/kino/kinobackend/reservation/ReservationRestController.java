@@ -31,7 +31,7 @@ public class ReservationRestController {
          return ResponseEntity.status(HttpStatus.OK).body(foundReservation);
     }
 
-    @PostMapping(value = "/create", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping("/create")
     public ResponseEntity<ReservationModel> create(@RequestBody ReservationModel reservationModel){
         ReservationModel createdReservation = reservationService.createReservation(reservationModel);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdReservation);
@@ -60,9 +60,9 @@ public class ReservationRestController {
         return ResponseEntity.status(HttpStatus.OK).body(reservedSeats);
     }
 
-    @GetMapping("/seatsInShow/{reservationId}")
-    public ResponseEntity<List<SeatModel>> getByReservationId(@PathVariable long reservationId){
-        List<SeatModel> foundReservation = reservationService.getSeatsForScreenByReservationId(reservationId);
+    @GetMapping("/seatsInShow/{showingId}")
+    public ResponseEntity<List<SeatModel>> getByReservationId(@PathVariable int showingId){
+        List<SeatModel> foundReservation = reservationService.getSeatsForScreenByShowingId(showingId);
         return ResponseEntity.status(HttpStatus.OK).body(foundReservation);
     }
 }

@@ -75,7 +75,6 @@ public class ReservationServiceImpl implements ReservationService {
                     .orElseThrow(() -> new RuntimeException("Seat not found"));
 
             // Check if seat is already reserved for this showing
-            // (You would need to implement this method in your repository)
             if (isAlreadyReserved(seat.getSeatId(), showing.getShowingId())) {
                 throw new RuntimeException("Seat " + seat.getSeatId() + " is already reserved");
             }
@@ -147,12 +146,13 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<SeatModel> getSeatsForScreenByReservationId(long reservationId) {
-        ReservationModel reservation = reservationRepository.findById(reservationId)
-                .orElseThrow(() -> new IllegalArgumentException("Reservation not found with id: " + reservationId));
+    public List<SeatModel> getSeatsForScreenByShowingId(int showingId) {
 
         // Get the screen from the showing
-        ScreenModel screen = reservation.getShowing().getScreenModel();
+        ShowingModel showing = showingRepository.findById(showingId)
+                .orElseThrow(() -> new IllegalArgumentException("Showing not found with id: " + showingId));
+
+        ScreenModel screen = showing.getScreenModel();
 
         // Fetch all seats for the screen
         return reservationRepository.findSeatsByScreenId(screen.getScreenId());

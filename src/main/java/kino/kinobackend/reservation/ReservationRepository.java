@@ -20,5 +20,4 @@ public interface ReservationRepository extends JpaRepository<ReservationModel, L
 
 
 
-
 }
