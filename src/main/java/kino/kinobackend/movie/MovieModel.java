@@ -9,6 +9,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Transient;
 import jakarta.persistence.*;
 import kino.kinobackend.genre.GenreModel;
 import kino.kinobackend.showing.ShowingModel;
@@ -25,13 +29,12 @@ import lombok.Setter;
 public class MovieModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="movie_id")
-    private int movieId; // Is set from external api ( themoviedb.org ) ...
+    private int id; // Is set from external api ( themoviedb.org ) ...
     private String title;
 
     @JsonProperty("genre_ids")
-    private String genreIds;
+    private List<Integer> genreIds;
 
     @Column(name="min_age")
     private int minAge;
@@ -44,6 +47,7 @@ public class MovieModel {
     @Column(name="end_date")
     private LocalDate endDate;
 
+    @Column(length=2000)
     private String overview;
     
     @JsonProperty("poster_path") // This is needed to get the string  returned and reckoned as it is named poster_path in Json and if not returns null ...
@@ -55,18 +59,22 @@ public class MovieModel {
 
     private boolean status;
 
-    @OneToMany(mappedBy = "movieModel", cascade = CascadeType.ALL)
-    @JsonBackReference
-    private List<ShowingModel> showingModels = new ArrayList<>();
+    // add a list of genres to work from the comma seperated string. Isn't and shouldn't be added to database ...
+    @Transient
+    private List<String> genreNames = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(
-            name = "movie_genre",
-            joinColumns = @JoinColumn(name = "movie_id"),
-            inverseJoinColumns = @JoinColumn(name = "genre_id")
-    )
-    @JsonManagedReference
-    private List<GenreModel> genreList;
+//    @OneToMany(mappedBy = "movieModel", cascade = CascadeType.ALL)
+//    @JsonBackReference
+//    private List<ShowingModel> showingModels = new ArrayList<>();
+//
+//    @ManyToMany
+//    @JoinTable(
+//            name = "movie_genre",
+//            joinColumns = @JoinColumn(name = "movie_id"),
+//            inverseJoinColumns = @JoinColumn(name = "genre_id")
+//    )
+//    @JsonManagedReference
+//    private List<GenreModel> genreList;
 
     // Overriding the setter for posterPath
     public void setPosterPath(String path) {

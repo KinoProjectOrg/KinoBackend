@@ -3,13 +3,15 @@ package kino.kinobackend.configuration;
 import kino.kinobackend.genre.GenreModel;
 import kino.kinobackend.genre.GenreRepository;
 import kino.kinobackend.genre.GenreServiceImpl;
+import kino.kinobackend.movie.MovieModel;
+import kino.kinobackend.movie.MovieServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/tool/fetch/")
@@ -23,10 +25,12 @@ public class DataController {
 
     private final GenreServiceImpl genreServiceImpl;
     private final GenreRepository genreRepository;
+    private final MovieServiceImpl movieServiceImpl;
 
-    public DataController(GenreServiceImpl genreServiceImpl, GenreRepository genreRepository) {
+    public DataController(GenreServiceImpl genreServiceImpl, GenreRepository genreRepository, MovieServiceImpl movieServiceImpl) {
         this.genreServiceImpl = genreServiceImpl;
         this.genreRepository = genreRepository;
+        this.movieServiceImpl = movieServiceImpl;
     }
 
     /*
@@ -35,8 +39,19 @@ public class DataController {
     *
     * */
 
+    @GetMapping("/movies")
+    public ResponseEntity<List<MovieModel>> fetchLatestMoviesWithGenres() {
 
-    // Genres fetching tool ...
+        // Fetch movies, add genreNames to each and save them to the local database ...
+        List<MovieModel> movieModels = movieServiceImpl.fetchLatestMoviesFromAPI();
+
+        if(movieModels != null) {
+            return ResponseEntity.ok(movieModels);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @GetMapping("/genres")
     public ResponseEntity<List<GenreModel>> fetchAllGenres() {
         List<GenreModel> movieGenres = genreServiceImpl.fetchAllGenres();
@@ -49,6 +64,4 @@ public class DataController {
             return ResponseEntity.notFound().build();
         }
     }
-
-
 }

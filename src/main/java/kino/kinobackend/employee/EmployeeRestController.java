@@ -42,6 +42,14 @@ public class EmployeeRestController {
         return employee.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    // find medarbejder efter navn
+    @GetMapping("/get/{name}")
+    public ResponseEntity<EmployeeModel> getEmployeeByName(@PathVariable String name) {
+        Optional<EmployeeModel> employee = employeeService.getEmployeeByName(name);
+        return employee.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     @PutMapping("/update/{id}")
     public ResponseEntity<EmployeeModel> updateEmployee(@PathVariable int id,
                                                         @RequestBody EmployeeModel updatedEmployee) {

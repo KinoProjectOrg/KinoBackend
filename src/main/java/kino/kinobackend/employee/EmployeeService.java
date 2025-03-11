@@ -17,4 +17,6 @@ public interface EmployeeService {
     EmployeeModel updateEmployee(int employeeID, EmployeeModel employee);
 
     void deleteEmployee(int employeeID);
+
+    Optional<EmployeeModel> getEmployeeByName(String name);
 }

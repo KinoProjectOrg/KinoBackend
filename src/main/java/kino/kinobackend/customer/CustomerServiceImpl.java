@@ -3,6 +3,7 @@ package kino.kinobackend.customer;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -37,5 +38,10 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void deleteCustomer(long id) {
         customerRepository.deleteById(id);
+    }
+
+    @Override
+    public Optional<CustomerModel> findByEmail(String email) {
+        return customerRepository.findByUsername(email);
     }
 }

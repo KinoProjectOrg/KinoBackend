@@ -1,7 +1,15 @@
 package kino.kinobackend.customer;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,9 +20,22 @@ public class CustomerRestController {
 
     private final CustomerService customerService;
 
-    public CustomerRestController(CustomerService customerService) {
+    private final AuthenticationManager authenticationManager;
+    private final UserDetailsService userDetailsService;
+    private final PasswordEncoder passwordEncoder;
+    private final CustomerRepository customerRepository;
+
+    public CustomerRestController(CustomerService customerService, AuthenticationManager authenticationManager, UserDetailsService userDetailsService, PasswordEncoder passwordEncoder, CustomerRepository customerRepository) {
         this.customerService = customerService;
+        this.authenticationManager = authenticationManager;
+        this.userDetailsService = userDetailsService;
+        this.passwordEncoder = passwordEncoder;
+        this.customerRepository = customerRepository;
     }
+//
+//    public CustomerRestController(CustomerService customerService) {
+//        this.customerService = customerService;
+//    }
 
     @GetMapping("/get")
     public List<CustomerModel> getAllCustomers(){
@@ -49,4 +70,5 @@ public class CustomerRestController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
 }

@@ -21,6 +21,7 @@ public class ReservationServiceImpl implements ReservationService {
     private final ShowingRepository showingRepository;
     private final CustomerRepository customerRepository;
 
+
     public ReservationServiceImpl(ReservationRepository reservationRepository, ShowingRepository showingRepository, SeatRepository seatRepository, CustomerRepository customerRepository) {
         this.reservationRepository = reservationRepository;
         this.showingRepository = showingRepository;
@@ -92,9 +93,10 @@ public class ReservationServiceImpl implements ReservationService {
 
                 // If it's the same customer, update its properties
                 if (existingCustomer.getCustomerId() == reservation.getCustomer().getCustomerId()) {
-                    existingCustomer.setName(customer.getName());
-                    existingCustomer.setEmail(customer.getEmail());
-                    existingCustomer.setPhone(customer.getPhone());
+                      existingCustomer.setUsername(customer.getUsername());
+//                    existingCustomer.setName(customer.getName());
+//                    existingCustomer.setEmail(customer.getEmail());
+//                    existingCustomer.setPhone(customer.getPhone());
                     customer = customerRepository.save(existingCustomer);
                 } else {
                     // Using a different customer, no need to update it
@@ -121,9 +123,15 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<SeatModel> findSeatsByShowingId(int showingId) {
+    public List<SeatModel> getSeatsForScreenByReservationId(long reservationId) {
+        ReservationModel reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new IllegalArgumentException("Reservation not found with id: " + reservationId));
 
-        return reservationRepository.findSeatsByShowingId(showingId);
+        // Get the screen from the showing
+        ScreenModel screen = reservation.getShowing().getScreenModel();
+
+        // Fetch all seats for the screen
+        return reservationRepository.findSeatsByScreenId(screen.getScreenId());
 
     }
 

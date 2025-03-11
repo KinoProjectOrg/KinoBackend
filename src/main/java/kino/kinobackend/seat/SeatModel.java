@@ -3,7 +3,6 @@ package kino.kinobackend.seat;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import kino.kinobackend.reservation.ReservationModel;
 import kino.kinobackend.screen.ScreenModel;
@@ -37,12 +36,10 @@ public class SeatModel {
 
     @ManyToOne
     @JoinColumn(name = "screen_id", referencedColumnName = "screen_id")
-    @JsonManagedReference
     private ScreenModel screenId;
 
     @ManyToMany(mappedBy = "seatList")
     @JsonIgnoreProperties("seatList")
     private Set<ReservationModel> reservations = new HashSet<>();
-
 
 }
