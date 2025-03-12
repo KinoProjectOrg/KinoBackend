@@ -15,7 +15,7 @@ public interface ReservationRepository extends JpaRepository<ReservationModel, L
             nativeQuery = true)
     List<SeatModel> findReservedSeatsByShowingId(@Param("showingId") int showingId);
 
-    @Query("SELECT s FROM SeatModel s WHERE s.screenId.screenId = :screenId")
+    @Query("SELECT s FROM SeatModel s WHERE s.screen.screenId = :screenId")
     List<SeatModel> findSeatsByScreenId(@Param("screenId") int screenId);
 
 

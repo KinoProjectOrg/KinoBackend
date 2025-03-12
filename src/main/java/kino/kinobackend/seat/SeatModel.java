@@ -2,6 +2,7 @@ package kino.kinobackend.seat;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import kino.kinobackend.reservation.ReservationModel;
@@ -35,11 +36,12 @@ public class SeatModel {
     private boolean isReserved;
 
     @ManyToOne
-    @JoinColumn(name = "screen_id", referencedColumnName = "screen_id")
-    private ScreenModel screenId;
+    @JoinColumn(name = "screen_id")
+    @JsonIgnore
+    private ScreenModel screen;
 
     @ManyToMany(mappedBy = "seatList")
-    @JsonIgnoreProperties("seatList")
+    @JsonIgnore
     private Set<ReservationModel> reservations = new HashSet<>();
 
 }

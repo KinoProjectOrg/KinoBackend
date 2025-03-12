@@ -1,169 +1,104 @@
-
 USE kino;
-INSERT INTO movie_model (movie_id, title, genre_ids, min_age, runtime, start_date, end_date, overview, poster_path, release_date, status)
-VALUES (1, 'Inception', '1', 12, 148, '2023-10-01', '2023-10-15', 'A thief who steals corporate secrets...', '/inception.jpg', '2010-07-16', true),
-       (2, 'The Dark Knight', '2', 12, 152, '2023-10-05', '2023-10-20', 'When the menace known as the Joker emerges...', '/dark_knight.jpg', '2008-07-18', true),
-       (3, 'Interstellar', '3', 12, 169, '2023-10-10', '2023-10-25', 'A team of explorers travel through a wormhole...', '/interstellar.jpg', '2014-11-07', true);
 
+-- Clear existing data
+SET FOREIGN_KEY_CHECKS = 0;
+TRUNCATE TABLE seat_reservation;
+TRUNCATE TABLE reservation_model;
+TRUNCATE TABLE showing_model;
+TRUNCATE TABLE customer_model;
+TRUNCATE TABLE seat_model;
+TRUNCATE TABLE screen_model;
+DROP PROCEDURE IF EXISTS InsertSeatsForScreen1;
+DROP PROCEDURE IF EXISTS InsertSeatsForScreen2;
+SET FOREIGN_KEY_CHECKS = 1;
+
+
+-- Insert screens
 INSERT INTO screen_model (screen_id, screen_number, max_rows, seats_per_row)
 VALUES
-    (1, 1, 20, 12),
-    (2, 2, 25, 16);
+    (1, 1, 20, 12), -- Large screen
+    (2, 2, 25, 16), -- Premium screen
+    (3, 3, 15, 10); -- Small screen
 
-DROP PROCEDURE IF EXISTS InsertSeatsForScreen1;
-
+-- Create a procedure to insert seats for screen 1
 DELIMITER //
 CREATE PROCEDURE InsertSeatsForScreen1()
 BEGIN
     DECLARE seat_row INT DEFAULT 1;
     DECLARE seat INT DEFAULT 1;
+
     WHILE seat_row <= 20 DO
-            WHILE seat <= 12 DO
-                    INSERT INTO seat_model (seat_no, seat_row, is_reserved, screen_id)
-                    VALUES (seat, seat_row, false, 1);
-                    SET seat = seat + 1;
-                END WHILE;
-            SET seat = 1;
-            SET seat_row = seat_row + 1;
-        END WHILE;
+        WHILE seat <= 12 DO
+            INSERT INTO seat_model (seat_no, seat_row, is_reserved, screen_id)
+            VALUES (seat, seat_row, false, 1);
+
+            SET seat = seat + 1;
+END WHILE;
+
+        SET seat = 1;
+        SET seat_row = seat_row + 1;
+END WHILE;
 END //
 DELIMITER ;
 
--- Call the procedure to insert seats for screen_id = 1
-CALL InsertSeatsForScreen1();
-
-DROP PROCEDURE IF EXISTS InsertSeatsForScreen2;
-
--- Insert seats for screen_id = 2 (25 rows, 16 seats per row)
+-- Create a procedure to insert seats for screen 2
 DELIMITER //
 CREATE PROCEDURE InsertSeatsForScreen2()
 BEGIN
     DECLARE seat_row INT DEFAULT 1;
     DECLARE seat INT DEFAULT 1;
+
     WHILE seat_row <= 25 DO
-            WHILE seat <= 16 DO
-                    INSERT INTO seat_model (seat_no, seat_row, is_reserved, screen_id)
-                    VALUES (seat, seat_row, false, 2);
-                    SET seat = seat + 1;
-                END WHILE;
-            SET seat = 1;
-            SET seat_row = seat_row + 1;
-        END WHILE;
+        WHILE seat <= 16 DO
+            INSERT INTO seat_model (seat_no, seat_row, is_reserved, screen_id)
+            VALUES (seat, seat_row, false, 2);
+
+            SET seat = seat + 1;
+END WHILE;
+
+        SET seat = 1;
+        SET seat_row = seat_row + 1;
+END WHILE;
 END //
 DELIMITER ;
 
--- Call the procedure to insert seats for screen_id = 2
+-- Create a procedure to insert seats for screen 3
+DELIMITER //
+
+
+-- Call the procedures to insert seats for all screens
+CALL InsertSeatsForScreen1();
 CALL InsertSeatsForScreen2();
 
-INSERT INTO showing_model (showing_id, start_time, date, screen_model_screen_id, movie_id)
+-- Insert customers
+INSERT INTO customer_model (username, password)
 VALUES
-    (1, '14:00:00', '2025-09-28', 1, 1),
-    (2, '17:00:00', '2025-12-30', 2, 2),
-    (3, '20:00:00', '2025-06-04', 1, 3);
+    ('john.doe@example.com', '1234'),
+    ('jane.doe@example.com', '1234'),
+    ('alice.johnson@example.com', '1234'),
+    ('bob.smith@example.com', '1234'),
+    ('emma.wilson@example.com', '1234');
 
-INSERT INTO customer_model (customer_id, password, username)
-VALUES (1, 1234,'john.doe@example.com'),
-       (2, 1234,'jane.doe@example.com'),
-       (3, 1234,'alice.johnson@example.com');
-
-INSERT INTO reservation_model (reservation_id, showing_id, customer_id)
+-- Insert showings WITHOUT specifying showing_id (let JPA generate them)
+INSERT INTO showing_model (start_time, date, screen_model_screen_id, movie_id)
 VALUES
-    (1, 1, 1),
-    (2, 2, 2),
-    (3, 3, 3);
+    -- Kraven the Hunter showings
+    ('12:30:00', '2024-12-11', 1, 539972),  -- Opening day
+    ('15:30:00', '2024-12-11', 1, 539972),
+    ('18:30:00', '2024-12-11', 1, 539972),
+    ('12:00:00', '2024-12-13', 1, 539972),  -- First Friday
 
-INSERT INTO seat_reservation (reservation_id, seat_id)
-VALUES
-    (1, 1),
-    (1, 2),
-    (2, 6),
-    (2, 7);
+    -- Gladiator II showings
+    ('12:00:00', '2024-11-13', 2, 558449),  -- Opening day
+    ('15:30:00', '2024-11-13', 2, 558449),
+    ('11:30:00', '2024-11-28', 1, 558449),  -- Thanksgiving
 
-INSERT INTO genre_model (genre_id, genre_name)
-VALUES
-    (1, "Horror"),
-    (2, "Action"),
-    (3, "Comedy");
+    -- Mickey 17 showings
+    ('13:00:00', '2025-02-28', 1, 696506),  -- Opening day
+    ('12:30:00', '2025-03-11', 3, 696506),  -- Today
+    ('16:00:00', '2025-03-11', 3, 696506),  -- Today
+    ('19:30:00', '2025-03-11', 3, 696506);  -- Today
 
-INSERT INTO movie_genre (movie_id, genre_id)
-VALUES
-    (1, 1),
-    (2, 1),
-    (3, 2);
-
-
-# USE kino;
-# INSERT INTO movie_model (movie_id, title, genre_ids, min_age, runtime, start_date, end_date, overview, poster_path, release_date, status)
-# VALUES (1, 'Inception', '14,878', 12, 148, '2023-10-01', '2023-10-15', 'A thief who steals corporate secrets...', '/inception.jpg', '2010-07-16', true),
-#        (2, 'The Dark Knight', '18,28', 12, 152, '2023-10-05', '2023-10-20', 'When the menace known as the Joker emerges...', '/dark_knight.jpg', '2008-07-18', true),
-#        (3, 'Interstellar', '12,878', 12, 169, '2023-10-10', '2023-10-25', 'A team of explorers travel through a wormhole...', '/interstellar.jpg', '2014-11-07', true);
-#
-# INSERT INTO screen_model (screen_id, screen_number, max_rows, seats_per_row)
-# VALUES
-#     (1, 1, 20, 12),
-#     (2, 2, 25, 16);
-#
-# DELIMITER //
-# CREATE PROCEDURE InsertSeatsForScreen1()
-# BEGIN
-#     DECLARE seat_row INT DEFAULT 1;
-#     DECLARE seat INT DEFAULT 1;
-#     WHILE seat_row <= 20 DO
-#         WHILE seat <= 12 DO
-#             INSERT INTO seat_model (seat_no, seat_row, is_reserved, screen_id)
-#             VALUES (seat, seat_row, false, 1);
-#             SET seat = seat + 1;
-# END WHILE;
-#         SET seat = 1;
-#         SET seat_row = seat_row + 1;
-# END WHILE;
-# END //
-# DELIMITER ;
-#
-# -- Call the procedure to insert seats for screen_id = 1
-# CALL InsertSeatsForScreen1();
-#
-# -- Insert seats for screen_id = 2 (25 rows, 16 seats per row)
-# DELIMITER //
-# CREATE PROCEDURE InsertSeatsForScreen2()
-# BEGIN
-#     DECLARE seat_row INT DEFAULT 1;
-#     DECLARE seat INT DEFAULT 1;
-#     WHILE seat_row <= 25 DO
-#         WHILE seat <= 16 DO
-#             INSERT INTO seat_model (seat_no, seat_row, is_reserved, screen_id)
-#             VALUES (seat, seat_row, false, 2);
-#             SET seat = seat + 1;
-# END WHILE;
-#         SET seat = 1;
-#         SET seat_row = seat_row + 1;
-# END WHILE;
-# END //
-# DELIMITER ;
-#
-# -- Call the procedure to insert seats for screen_id = 2
-# CALL InsertSeatsForScreen2();
-#
-# INSERT INTO showing_model (showing_id, start_time, end_time, screen_model_screen_id)
-# VALUES
-#     (1, '14:00:00', '16:30:00', 1),
-#     (2, '17:00:00', '19:30:00', 2),
-#     (3, '20:00:00', '22:30:00', 1);
-#
-# INSERT INTO customer_model (customer_id, name, email, phone)
-# VALUES (1, 'John Doe', 'john.doe@example.com', '12345678'),
-#        (2, 'Jane Smith', 'jane.smith@example.com', '87654321'),
-#        (3, 'Alice Johnson', 'alice.johnson@example.com', '55555555');
-#
-# INSERT INTO reservation_model (reservation_id, showing_id, customer_id)
-# VALUES
-#     (1, 1, 1),
-#     (2, 2, 2),
-#     (3, 3, 3);
-#
-# INSERT INTO seat_reservation (reservation_id, seat_id)
-# VALUES
-#     (1, 1),
-#     (1, 2),
-#     (2, 6),
-#     (2, 7);
+-- Drop the procedures as they're no longer needed
+DROP PROCEDURE IF EXISTS InsertSeatsForScreen1;
+DROP PROCEDURE IF EXISTS InsertSeatsForScreen2;

@@ -8,6 +8,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/showing")
+@CrossOrigin("*")
 public class ShowingController {
 
     private final ShowingService showingService;
@@ -45,7 +46,7 @@ public class ShowingController {
         public ResponseEntity<ShowingModel> updateShowing ( @PathVariable int id, @RequestBody ShowingModel showingModel) {
             showingModel.setShowingId(id);
             ShowingModel updatedShowing = showingService.updateShowing(showingModel);
-            return ResponseEntity.ok(updatedShowing);
+            return ResponseEntity.status(HttpStatus.OK).body(updatedShowing);
 
         }
 
