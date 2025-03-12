@@ -45,8 +45,12 @@ public class CustomerRestController {
 
     @GetMapping("/get/{id}")
     public ResponseEntity<CustomerModel> getCustomer(@PathVariable long id){
-        CustomerModel foundCustomer = customerService.getCustomerById(id);
-        return ResponseEntity.status(HttpStatus.OK).body(foundCustomer);
+        try {
+            CustomerModel customer = customerService.getCustomerById(id);
+            return ResponseEntity.ok(customer);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping("/create")
