@@ -32,12 +32,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/registerEmployee", "/registerCustomer").permitAll() // disse sider er åbne for ALLE
+                        .requestMatchers("/login", "/registerEmployee", "/registerCustomer", "/movies/**").permitAll() // disse sider er åbne for ALLE
                         .requestMatchers("/customer/**").hasRole("USER") // kun til kunder
 //                        .requestMatchers("/reservation/**").hasRole("USER")
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/filmoperator/**").hasRole("FILM_OPERATOR")
-                        .requestMatchers("/tool/fetch/**").permitAll()
+                        .requestMatchers("/tool/fetch/**").permitAll() // Should be admin ...
 //                        .anyRequest().authenticated() // Alle andre endpoints kræver autentifikation. Den er muligvis unødvendig??
                 );
         return http.build();
