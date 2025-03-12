@@ -35,8 +35,6 @@ class ShowingControllerTest {
     ShowingService showingService;
 
     private ShowingModel showing;
-    @Autowired
-    private ShowingRepository showingRepository;
 
     @BeforeEach
     void setUp() {
@@ -86,7 +84,7 @@ class ShowingControllerTest {
         mockMvc.perform(post("/showing/newShowing")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(createdShowing))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.showingId").value(99));
     }
 
