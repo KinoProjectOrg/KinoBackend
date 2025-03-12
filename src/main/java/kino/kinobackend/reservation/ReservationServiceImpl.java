@@ -100,34 +100,52 @@ public class ReservationServiceImpl implements ReservationService {
 
 
     @Override
+    @Transactional
     public ReservationModel updateReservation(ReservationModel reservation) {
+
+        // first we check if reservation exists
         if (!reservationRepository.existsById(reservation.getReservationId())) {
             throw new IllegalArgumentException("Reservation not found");
         }
+
+        // then handle customer - create if doesn't exist
         CustomerModel customer = reservation.getCustomer();
         if (customer != null) {
             if (customer.getCustomerId() == 0) {
                 // Create new customer
                 customer = customerRepository.save(customer);
             } else {
-                // Update existing customer or use a different one
+                // Update existing customer
                 CustomerModel existingCustomer = customerRepository.findById(customer.getCustomerId())
                         .orElseThrow(() -> new RuntimeException("Customer not found with id"));
-
-                // If it's the same customer, update its properties
-                if (existingCustomer.getCustomerId() == reservation.getCustomer().getCustomerId()) {
-                      existingCustomer.setUsername(customer.getUsername());
-//                    existingCustomer.setName(customer.getName());
-//                    existingCustomer.setEmail(customer.getEmail());
-//                    existingCustomer.setPhone(customer.getPhone());
-                    customer = customerRepository.save(existingCustomer);
-                } else {
-                    // Using a different customer, no need to update it
-                    customer = existingCustomer;
-                }
+                existingCustomer.setUsername(customer.getUsername());
+                existingCustomer.setPassword(customer.getPassword());
+                customer = customerRepository.save(existingCustomer);
             }
             reservation.setCustomer(customer);
         }
+
+        // check showing exists
+        ShowingModel showing = showingRepository.findById(reservation.getShowing().getShowingId())
+                .orElseThrow(() -> new RuntimeException("Showing not found"));
+
+        // checks all seats exist and are available
+        List<SeatModel> seats = new ArrayList<>();
+        for (SeatModel seatModel : reservation.getSeatList()) {
+            SeatModel seat = seatRepository.findById(seatModel.getSeatId())
+                    .orElseThrow(() -> new RuntimeException("Seat not found"));
+
+            // Check if seat is already reserved for this showing
+            if (isAlreadyReserved(seat.getSeatId(), showing.getShowingId())) {
+                throw new RuntimeException("Seat " + seat.getSeatId() + " is already reserved");
+            }
+
+            seats.add(seat);
+        }
+
+        // update and save the reservation
+        reservation.setShowing(showing);
+        reservation.setSeatList(seats);
 
         return reservationRepository.save(reservation);
     }
