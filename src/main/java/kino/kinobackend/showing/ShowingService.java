@@ -21,8 +21,8 @@ public class ShowingService{
                 .orElseThrow(() -> new IllegalArgumentException("Show not found with id: " + id + " was not found"));
     }
 
-    public void createShowing(ShowingModel showingModel) {
-        showingRepository.save(showingModel);
+    public ShowingModel createShowing(ShowingModel showingModel) {
+        return showingRepository.save(showingModel);
     }
 
     public ShowingModel updateShowing(ShowingModel showingModel) {
