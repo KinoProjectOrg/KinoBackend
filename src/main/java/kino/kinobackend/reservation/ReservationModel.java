@@ -29,6 +29,7 @@ public class ReservationModel {
 
     @ManyToOne
     @JoinColumn(name = "showing_id")
+    @JsonIgnoreProperties({"reservations", "screenModel"})
     private ShowingModel showing;
 
     @ManyToOne

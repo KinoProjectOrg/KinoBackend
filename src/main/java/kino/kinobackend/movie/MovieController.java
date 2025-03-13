@@ -1,6 +1,6 @@
 package kino.kinobackend.movie;
 
-import lombok.Getter;
+import kino.kinobackend.genre.GenreServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/movies")
+@CrossOrigin("*")
 public class MovieController {
 
     /*
@@ -18,18 +19,18 @@ public class MovieController {
     * */
 
     private final MovieServiceImpl movieServiceImpl;
+    private final GenreServiceImpl genreServiceImpl;
 
-    public MovieController(MovieServiceImpl movieServiceImpl) {
+    public MovieController(MovieServiceImpl movieServiceImpl, GenreServiceImpl genreServiceImpl) {
         this.movieServiceImpl = movieServiceImpl;
+        this.genreServiceImpl = genreServiceImpl;
     }
 
     /*
     *
-    * Add movies to database
+    * Add movies to database -- see DataController ...
     *
     * */
-
-
 
     /*
     *
@@ -54,13 +55,25 @@ public class MovieController {
 
     @GetMapping("/get")
     public List<MovieModel> getMovies() {
-        return movieServiceImpl.getMovies();
+        List<MovieModel> allMoviesInDB = movieServiceImpl.getMovies();
+
+        for (MovieModel movie : allMoviesInDB) {
+            genreServiceImpl.addGenrestoGenreListByMovie(movie);
+        }
+
+        return allMoviesInDB;
     }
 
     @GetMapping("/get/{id}")
     public ResponseEntity<MovieModel> getMovie(@PathVariable int id) {
         MovieModel foundMovie = movieServiceImpl.getMovie(id);
-        return ResponseEntity.ok(foundMovie);
+        if (foundMovie != null) {
+            genreServiceImpl.addGenrestoGenreListByMovie(foundMovie);
+            return ResponseEntity.ok(foundMovie);
+        }
+        else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping("/create")
@@ -69,14 +82,17 @@ public class MovieController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdMovie);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<MovieModel> updateMovie(@RequestBody MovieModel movieModel) {
+    @PutMapping("/filmoperator/update/{movieId}")
+    public ResponseEntity<MovieModel> updateMovie(@PathVariable int movieId, @RequestBody MovieModel movieModel) {
+        movieModel.setId(movieId);
         MovieModel updatedMovie = movieServiceImpl.updateMovie(movieModel);
         return ResponseEntity.ok(updatedMovie);
     }
 
-    @DeleteMapping("/delete")
-    public void deleteMovie(int id) {
-        movieServiceImpl.deleteMovie(id);
+    @DeleteMapping("/filmoperator/delete/{movieId}")
+    public void deleteMovie(@PathVariable int movieId) {
+        movieServiceImpl.deleteMovie(movieId);
     }
+
+
 }

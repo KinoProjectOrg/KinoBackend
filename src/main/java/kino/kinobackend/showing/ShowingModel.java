@@ -1,6 +1,8 @@
 package kino.kinobackend.showing;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import kino.kinobackend.movie.MovieModel;
@@ -30,10 +32,11 @@ public class ShowingModel {
     @Column(name = "start_time")
     private LocalTime startTime;
 
+    private LocalDate date;
 
     @ManyToOne
-    @JoinColumn(name = "screen_id", referencedColumnName = "screen_id") // fk
-    @JsonManagedReference
+    @JoinColumn(referencedColumnName = "screen_id") // fk
+    @JsonIgnoreProperties({"showings", "seats"})
     private ScreenModel screenModel;
 
     @ManyToOne
@@ -41,7 +44,7 @@ public class ShowingModel {
     private MovieModel movieModel;
 
     @OneToMany(mappedBy = "showing", cascade = CascadeType.ALL) // reservation er over showing
-    @JsonBackReference
+    @JsonIgnore
     private List<ReservationModel> reservationModel;
 
 }

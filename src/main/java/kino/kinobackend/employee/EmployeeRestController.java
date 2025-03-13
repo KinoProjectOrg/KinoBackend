@@ -1,5 +1,7 @@
 package kino.kinobackend.employee;
 
+import kino.kinobackend.showing.ShowingModel;
+import kino.kinobackend.showing.ShowingRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,14 +11,17 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/employee")
+@CrossOrigin("*")
 public class EmployeeRestController {
 
     private final EmployeeService employeeService;
+    private final ShowingRepository showingRepository;
     EmployeeRepository employeeRepository;
 
-    public EmployeeRestController(EmployeeRepository employeeRepository, EmployeeService employeeService) {
+    public EmployeeRestController(EmployeeRepository employeeRepository,EmployeeService employeeService,ShowingRepository showingRepository) {
         this.employeeRepository = employeeRepository;
         this.employeeService = employeeService;
+        this.showingRepository = showingRepository;
     }
 
 
@@ -41,6 +46,14 @@ public class EmployeeRestController {
         return employee.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    // find medarbejder efter navn
+    @GetMapping("/get/{name}")
+    public ResponseEntity<EmployeeModel> getEmployeeByName(@PathVariable String name) {
+        Optional<EmployeeModel> employee = employeeService.getEmployeeByName(name);
+        return employee.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     @PutMapping("/update/{id}")
     public ResponseEntity<EmployeeModel> updateEmployee(@PathVariable int id,
                                                         @RequestBody EmployeeModel updatedEmployee) {
@@ -61,6 +74,7 @@ public class EmployeeRestController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
 
 
 }

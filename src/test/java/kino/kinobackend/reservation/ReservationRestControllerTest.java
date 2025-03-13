@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -25,6 +26,7 @@ import java.util.List;
 
 
 @WebMvcTest(ReservationRestController.class)
+@AutoConfigureMockMvc(addFilters = false)
 class ReservationRestControllerTest {
 
     @MockitoBean
@@ -150,7 +152,7 @@ class ReservationRestControllerTest {
         SeatModel seatModel = new SeatModel();
         seatModel.setSeatId(1);
         seats.add(seatModel);
-        Mockito.when(reservationService.getSeatsForScreenByReservationId(1)).thenReturn(seats);
+        Mockito.when(reservationService.getSeatsForScreenByShowingId(1)).thenReturn(seats);
 
         mockMvc.perform(get("/reservation/seatsInShow/1")
                 .contentType(MediaType.APPLICATION_JSON))

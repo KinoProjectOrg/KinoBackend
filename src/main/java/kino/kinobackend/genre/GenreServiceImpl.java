@@ -1,5 +1,6 @@
 package kino.kinobackend.genre;
 
+import kino.kinobackend.movie.MovieModel;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import java.util.List;
@@ -21,7 +22,7 @@ public class GenreServiceImpl implements GenreService {
         this.genreRepository = genreRepository;
     }
 
-    // Get all genres ...
+    // Get all genres from tmdb.org ...
     @Override
     public List<GenreModel> fetchAllGenres() {
         return webClient.get()
@@ -32,4 +33,23 @@ public class GenreServiceImpl implements GenreService {
                 .block(); // Blocking for the result to be returned synchronously
     }
 
+    // Get and add genres for a specific movie from the local database by supplied ids (genreIds)...
+    public void addGenrestoGenreListByMovie(MovieModel movie) {
+
+        // Get get specific movie's list of genreIds ...
+        List<Integer> ids = movie.getGenreIds();
+        // get genres directly from external api ...
+        List<GenreModel> genres = fetchAllGenres();
+//        // Alternative: get genres from local database ...
+//        List<GenreModel> genres = new ArrayList<>();
+//        genres.addAll(genreRepository.findAll());
+
+        for(int genreId : ids) {
+            for(GenreModel genre : genres) {
+                if(genre.getId() == genreId) {
+                    movie.getGenreNames().add(genre.getName());
+                }
+            }
+        }
+    }
 }
