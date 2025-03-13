@@ -55,4 +55,17 @@ public class ShowingController {
         showingService.deleteShowing(id);
         return ResponseEntity.noContent().build();
     }
-}
+
+        @PostMapping("/filmoperator/create")
+        public ResponseEntity<ShowingModel> createShowingOp(@RequestBody ShowingModel show) {
+            ShowingModel showingModel = showingService.createShowing(show);
+            return ResponseEntity.ok(showingModel);
+        }
+
+        @DeleteMapping("/filmoperator/delete/{showingId}")
+        public void deleteShowingOp(@PathVariable int showingId) {
+        showingService.deleteShowing(showingId);
+        }
+    }
+
+

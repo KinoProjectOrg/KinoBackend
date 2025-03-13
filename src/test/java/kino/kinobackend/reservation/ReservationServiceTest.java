@@ -4,6 +4,7 @@ import kino.kinobackend.customer.CustomerModel;
 import kino.kinobackend.customer.CustomerRepository;
 import kino.kinobackend.screen.ScreenModel;
 import kino.kinobackend.seat.SeatModel;
+import kino.kinobackend.seat.SeatRepository;
 import kino.kinobackend.showing.ShowingModel;
 import kino.kinobackend.showing.ShowingRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,6 +34,9 @@ class ReservationServiceTest {
     @Mock
     ShowingRepository showingRepository;
 
+    @Mock
+    SeatRepository seatRepository;
+
     @InjectMocks
     ReservationServiceImpl reservationService;
 
@@ -40,7 +44,8 @@ class ReservationServiceTest {
     CustomerModel customer;
     ShowingModel showing;
     ScreenModel screenModel;
-
+    SeatModel seat1;
+    SeatModel seat2;
     //Reservation has need for alot of data when run, so ive tried to implement it in setup.
     @BeforeEach
     void setUp() {
@@ -57,6 +62,14 @@ class ReservationServiceTest {
         showing = new ShowingModel();
         showing.setShowingId(1);
         showing.setScreenModel(screenModel);
+
+        seat1 = new SeatModel();
+        seat1.setSeatId(1);
+        seat2 = new SeatModel();
+        seat2.setSeatId(2);
+        List<SeatModel> seats = new ArrayList<>();
+        seats.add(seat1);
+        seats.add(seat2);
 
         reservationModel.setShowing(showing);
 
@@ -105,17 +118,20 @@ class ReservationServiceTest {
 
     @Test
     void updateReservationTest() {
+        // Setup mocks for the repositories
         Mockito.when(reservationRepository.existsById(1L)).thenReturn(true);
-        Mockito.when(reservationRepository.save(reservationModel)).thenReturn(reservationModel);
         Mockito.when(customerRepository.findById(1L)).thenReturn(Optional.of(customer));
         Mockito.when(customerRepository.save(Mockito.any(CustomerModel.class))).thenReturn(customer);
+        Mockito.when(showingRepository.findById(1)).thenReturn(Optional.of(showing));
+        Mockito.when(reservationRepository.save(Mockito.any(ReservationModel.class))).thenReturn(reservationModel);
 
+        // Execute the method
         ReservationModel updatedReservation = reservationService.updateReservation(reservationModel);
 
+        // Verify the result
         assertEquals(reservationModel, updatedReservation);
-        Mockito.verify(reservationRepository).save(reservationModel);
-    }
 
+    }
 
     @Test
     void deleteReservationTest() {

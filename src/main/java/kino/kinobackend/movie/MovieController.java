@@ -82,14 +82,17 @@ public class MovieController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdMovie);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<MovieModel> updateMovie(@RequestBody MovieModel movieModel) {
+    @PutMapping("/filmoperator/update/{movieId}")
+    public ResponseEntity<MovieModel> updateMovie(@PathVariable int movieId, @RequestBody MovieModel movieModel) {
+        movieModel.setId(movieId);
         MovieModel updatedMovie = movieServiceImpl.updateMovie(movieModel);
         return ResponseEntity.ok(updatedMovie);
     }
 
-    @DeleteMapping("/delete")
-    public void deleteMovie(int id) {
-        movieServiceImpl.deleteMovie(id);
+    @DeleteMapping("/filmoperator/delete/{movieId}")
+    public void deleteMovie(@PathVariable int movieId) {
+        movieServiceImpl.deleteMovie(movieId);
     }
+
+
 }

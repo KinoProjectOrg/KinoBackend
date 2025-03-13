@@ -6,6 +6,7 @@ import kino.kinobackend.employee.EmployeeModel;
 import kino.kinobackend.employee.EmployeeRepository;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -58,7 +59,7 @@ public class LoginController {
         newCustomer.setPassword(passwordEncoder.encode(registerRequest.getPassword())); // her bliver koden hashet så man ikke kan lure den i db.....
         customerRepository.save(newCustomer);
 
-        return ResponseEntity.status(201).body("Bruger er blevet oprettet");
+        return ResponseEntity.status(201).body(newCustomer);
     }
 
     // opret en ny medarbejder ---- der skal laves dropdown med role
@@ -74,7 +75,7 @@ public class LoginController {
         employee.setRole(registerRequest.getRole());
         employeeRepository.save(employee);
 
-        return ResponseEntity.status(201).body("Medarbejderen er blevet oprettet");
+        return ResponseEntity.status(201).body(employee);
     }
 
     @PostMapping("/login")
@@ -84,14 +85,16 @@ public class LoginController {
             var customer = customerRepository.findByUsername(loginRequest.getUsername());
             if (customer.isPresent()) {
                 var userDetails = userDetailsService.loadUserByUsername(loginRequest.getUsername());
-                return authenticateUser(loginRequest, userDetails);
+                authenticateUser(loginRequest, userDetails);
+                return ResponseEntity.status(HttpStatus.OK).body(customer);
             }
 
             // hvis ikke kunden findes, så leder den efter en medarbejder
             var employee = employeeRepository.findByUsername(loginRequest.getUsername());
             if (employee.isPresent()) {
                 var userDetails = userDetailsService.loadUserByUsername(loginRequest.getUsername());
-                return authenticateUser(loginRequest, userDetails);
+                authenticateUser(loginRequest, userDetails);
+                return ResponseEntity.status(HttpStatus.OK).body(employee);
             }
 
             // hvis ingen af dem findes, returneres en 401 Unauthorized........

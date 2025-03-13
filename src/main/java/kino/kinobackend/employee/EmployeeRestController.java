@@ -1,5 +1,7 @@
 package kino.kinobackend.employee;
 
+import kino.kinobackend.showing.ShowingModel;
+import kino.kinobackend.showing.ShowingRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,11 +15,13 @@ import java.util.Optional;
 public class EmployeeRestController {
 
     private final EmployeeService employeeService;
+    private final ShowingRepository showingRepository;
     EmployeeRepository employeeRepository;
 
-    public EmployeeRestController(EmployeeRepository employeeRepository, EmployeeService employeeService) {
+    public EmployeeRestController(EmployeeRepository employeeRepository,EmployeeService employeeService,ShowingRepository showingRepository) {
         this.employeeRepository = employeeRepository;
         this.employeeService = employeeService;
+        this.showingRepository = showingRepository;
     }
 
 
@@ -70,6 +74,7 @@ public class EmployeeRestController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
 
 
 }
