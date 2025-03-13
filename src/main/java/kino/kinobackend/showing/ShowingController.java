@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/showing")
 @CrossOrigin("*")
 public class ShowingController {
 
@@ -49,10 +50,11 @@ public class ShowingController {
 
         }
 
-        @DeleteMapping("/deleteShowing/{id}")
-        public void deleteShowing ( @PathVariable int id){
-            showingService.deleteShowing(id);
-        }
+    @DeleteMapping("/deleteShowing/{id}")
+    public ResponseEntity<Void> deleteShowing(@PathVariable int id) {
+        showingService.deleteShowing(id);
+        return ResponseEntity.noContent().build();
+    }
 
         @PostMapping("/filmoperator/create")
         public ResponseEntity<ShowingModel> createShowingOp(@RequestBody ShowingModel show) {
