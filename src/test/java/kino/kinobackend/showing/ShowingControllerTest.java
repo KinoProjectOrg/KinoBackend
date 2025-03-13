@@ -3,6 +3,7 @@ package kino.kinobackend.showing;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kino.kinobackend.customer.CustomerModel;
 import kino.kinobackend.employee.EmployeeRepository;
+import kino.kinobackend.movie.MovieModel;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,11 +36,15 @@ class ShowingControllerTest {
     ShowingService showingService;
 
     private ShowingModel showing;
-
+    private MovieModel movie;
     @BeforeEach
     void setUp() {
         showing = new ShowingModel();
         showing.setShowingId(99);
+        movie = new MovieModel();
+        movie.setId(1);
+        showing.setMovieModel(movie);
+
 
     }
 
