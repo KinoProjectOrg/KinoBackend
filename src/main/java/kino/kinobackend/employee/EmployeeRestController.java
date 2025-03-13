@@ -47,7 +47,7 @@ public class EmployeeRestController {
     }
 
     // find medarbejder efter navn
-    @GetMapping("/get/{name}")
+    @GetMapping("/get/name/{name}")
     public ResponseEntity<EmployeeModel> getEmployeeByName(@PathVariable String name) {
         Optional<EmployeeModel> employee = employeeService.getEmployeeByName(name);
         return employee.map(ResponseEntity::ok)
