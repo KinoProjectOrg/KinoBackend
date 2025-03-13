@@ -6,7 +6,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
@@ -41,11 +40,11 @@ class SeatServiceImplTest {
     void getSeatTest() {
         Mockito.when(seatRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(seatModel));
         SeatModel seat = seatService.getSeat(2);
-        assertEquals(seatModel, seatModel2);
+        assertEquals(seatModel, seat);
     }
 
     @Test
-    void getAllSeats() {
+    void getAllSeatsTest() {
         List<SeatModel> mockSeats = Arrays.asList(seatModel, seatModel2);
         Mockito.when(seatRepository.findAll()).thenReturn(mockSeats);
         List<SeatModel> seats = seatService.getAllSeats();
@@ -55,7 +54,7 @@ class SeatServiceImplTest {
     }
 
     @Test
-    void updateSeat() {
+    void updateSeatTest() {
         Mockito.when(seatRepository.existsById(seatModel.getSeatId())).thenReturn(true);
         Mockito.when(seatRepository.save(Mockito.any(SeatModel.class))).thenReturn(seatModel);
 
@@ -65,7 +64,7 @@ class SeatServiceImplTest {
     }
 
     @Test
-    void seatStatus() {
+    void seatStatusTest() {
         Mockito.when(seatRepository.findById(1)).thenReturn(Optional.of(seatModel));
 
         boolean status = seatService.seatStatus(1);
@@ -74,7 +73,7 @@ class SeatServiceImplTest {
     }
 
     @Test
-    void reserveSeat() {
+    void reserveSeatTest() {
         Mockito.when(seatRepository.findById(1)).thenReturn(Optional.of(seatModel));
         Mockito.when(seatRepository.save(Mockito.any(SeatModel.class))).thenReturn(seatModel);
         boolean reserved = seatService.reserveSeat(1);
