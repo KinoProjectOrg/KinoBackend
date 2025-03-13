@@ -1,5 +1,6 @@
 package kino.kinobackend.employee;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import kino.kinobackend.showing.ShowingRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,7 +39,6 @@ class EmployeeRestControllerTest {
     @MockitoBean
     private ShowingRepository showingRepository;
 
-
     private EmployeeModel employee;
     @BeforeEach
     void setUp() {
@@ -53,9 +53,20 @@ class EmployeeRestControllerTest {
     }
 
     @Test
-    void createNewEmployee() {
+    void createNewEmployee() throws  Exception{
 
+        // simulates the creation of an employee with our employee mock up
+        Mockito.when(employeeService.createNewEmployee(Mockito.any(EmployeeModel.class))).thenReturn(employee);
 
+        ObjectMapper objectMapper = new ObjectMapper();
+        String newEmployee = objectMapper.writeValueAsString(employee);
+
+        mockMvc.perform(post("/employee/create")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(newEmployee))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.username").value("og@gmail.com"));
+                 // andExpect(jsonPath("$.employeeId").value(1));
     }
 
     @Test
@@ -100,7 +111,21 @@ class EmployeeRestControllerTest {
     }
 
     @Test
-    void updateEmployee() {
+    void updateEmployee() throws Exception{
+
+        int employeeId = employee.getEmployeeId();
+
+        Mockito.when(employeeService.updateEmployee(Mockito.anyInt(), Mockito.any(EmployeeModel.class))).thenReturn(employee);
+
+        // convert the Java object to JSON
+        ObjectMapper mapper = new ObjectMapper();
+        String updatedEmployee= mapper.writeValueAsString(employee);
+
+        mockMvc.perform(put("/employee/update/" + employeeId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(updatedEmployee))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.employeeId").value(1));
     }
 
     @Test
