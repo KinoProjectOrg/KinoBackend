@@ -64,7 +64,7 @@ class EmployeeRestControllerTest {
         mockMvc.perform(post("/employee/create")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(newEmployee))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.username").value("og@gmail.com"));
                  // andExpect(jsonPath("$.employeeId").value(1));
     }
