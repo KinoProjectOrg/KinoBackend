@@ -43,7 +43,10 @@ public class GenreServiceImpl implements GenreService {
 //        // Alternative: get genres from local database ...
 //        List<GenreModel> genres = new ArrayList<>();
 //        genres.addAll(genreRepository.findAll());
-
+        if (ids == null || ids.isEmpty()) {
+            System.out.println("No genres found");
+            return;
+        }
         for(int genreId : ids) {
             for(GenreModel genre : genres) {
                 if(genre.getId() == genreId) {
