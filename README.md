@@ -31,7 +31,7 @@ To run the application locally, follow these steps:
 
 3. Access the application in your browser at http://localhost:8080/login
 
-```java 
+```
 Before Usage, run http://localhost:8080/tool/fetch/movies, to get movies in database.
 then run the data.sql script in your mysql, then all data should be set up.
 
