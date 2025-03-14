@@ -28,7 +28,7 @@ public class EmployeeRestController {
     @PostMapping("/create")
     public ResponseEntity<EmployeeModel> createNewEmployee(@RequestBody EmployeeModel employee) {
         EmployeeModel createdEmployee = employeeService.createNewEmployee(employee);
-        return ResponseEntity.ok(createdEmployee);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdEmployee);
     }
 
     @GetMapping("/get")
