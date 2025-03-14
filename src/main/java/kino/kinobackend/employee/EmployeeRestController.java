@@ -28,7 +28,7 @@ public class EmployeeRestController {
     @PostMapping("/create")
     public ResponseEntity<EmployeeModel> createNewEmployee(@RequestBody EmployeeModel employee) {
         EmployeeModel createdEmployee = employeeService.createNewEmployee(employee);
-        return ResponseEntity.ok(createdEmployee);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdEmployee);
     }
 
     @GetMapping("/get")
@@ -47,7 +47,7 @@ public class EmployeeRestController {
     }
 
     // find medarbejder efter navn
-    @GetMapping("/get/{name}")
+    @GetMapping("/get/name/{name}")
     public ResponseEntity<EmployeeModel> getEmployeeByName(@PathVariable String name) {
         Optional<EmployeeModel> employee = employeeService.getEmployeeByName(name);
         return employee.map(ResponseEntity::ok)
