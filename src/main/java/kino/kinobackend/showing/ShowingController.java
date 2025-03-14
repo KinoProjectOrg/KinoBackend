@@ -1,5 +1,6 @@
 package kino.kinobackend.showing;
 
+import kino.kinobackend.movie.MovieModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -7,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/showing")
+@CrossOrigin("*")
 public class ShowingController {
 
     private final ShowingService showingService;
@@ -32,11 +35,13 @@ public class ShowingController {
 
     @PostMapping(("/newShowing"))
     public ResponseEntity<ShowingModel> addShowing(@RequestBody ShowingModel showingModel) {
-        if (showingService.getAllShowings().contains(showingModel)) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        } else {
-            showingService.createShowing(showingModel);
-            return ResponseEntity.status(HttpStatus.CREATED).body(showingModel);
+        try {
+            // Now save the showing
+            ShowingModel savedShowing = showingService.createShowing(showingModel);
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedShowing);
+        } catch (Exception e) {
+            e.printStackTrace();  // Log the error
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
@@ -48,8 +53,22 @@ public class ShowingController {
 
         }
 
-        @DeleteMapping("/deleteShowing/{id}")
-        public void deleteShowing ( @PathVariable int id){
-            showingService.deleteShowing(id);
+    @DeleteMapping("/deleteShowing/{id}")
+    public ResponseEntity<Void> deleteShowing(@PathVariable int id) {
+        showingService.deleteShowing(id);
+        return ResponseEntity.noContent().build();
+    }
+
+        @PostMapping("/filmoperator/create")
+        public ResponseEntity<ShowingModel> createShowingOp(@RequestBody ShowingModel show) {
+            ShowingModel showingModel = showingService.createShowing(show);
+            return ResponseEntity.ok(showingModel);
+        }
+
+        @DeleteMapping("/filmoperator/delete/{showingId}")
+        public void deleteShowingOp(@PathVariable int showingId) {
+        showingService.deleteShowing(showingId);
         }
     }
+
+

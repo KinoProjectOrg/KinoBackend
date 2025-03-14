@@ -1,7 +1,9 @@
 package kino.kinobackend.reservation;
 
 
+import kino.kinobackend.seat.SeatModel;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/reservation")
+@CrossOrigin("*")
 public class ReservationRestController {
 
     private final ReservationService reservationService;
@@ -49,5 +52,17 @@ public class ReservationRestController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/{showingId}")
+    public ResponseEntity<List<SeatModel>> getByShowingId(@PathVariable int showingId){
+        List<SeatModel> reservedSeats = reservationService.findReservedSeatsByShowingId(showingId);
+        return ResponseEntity.status(HttpStatus.OK).body(reservedSeats);
+    }
+
+    @GetMapping("/seatsInShow/{showingId}")
+    public ResponseEntity<List<SeatModel>> getByReservationId(@PathVariable int showingId){
+        List<SeatModel> foundReservation = reservationService.getSeatsForScreenByShowingId(showingId);
+        return ResponseEntity.status(HttpStatus.OK).body(foundReservation);
     }
 }

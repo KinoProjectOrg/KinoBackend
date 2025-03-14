@@ -1,5 +1,8 @@
 package kino.kinobackend.reservation;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import kino.kinobackend.customer.CustomerModel;
 import kino.kinobackend.seat.SeatModel;
@@ -25,8 +28,9 @@ public class ReservationModel {
     private long reservationId;
 
     @ManyToOne
-    @JoinColumn(name = "show_id")
-    private ShowingModel show;
+    @JoinColumn(name = "showing_id")
+    @JsonIgnoreProperties({"reservations", "screenModel"})
+    private ShowingModel showing;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
@@ -39,14 +43,6 @@ public class ReservationModel {
             joinColumns = @JoinColumn(name = "reservation_id"),
             inverseJoinColumns = @JoinColumn(name = "seat_id")
     )
+    @JsonIgnoreProperties("reservations")
     private List<SeatModel> seatList;
-
-    public void setReservationId(long reservationId) {
-        this.reservationId = reservationId;
-    }
-
-    public long getReservationId() {
-        return reservationId;
-    }
-
 }

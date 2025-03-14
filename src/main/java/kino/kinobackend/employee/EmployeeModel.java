@@ -17,18 +17,26 @@ public class EmployeeModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="employee_id")
-    private int employeeID;
+    private int employeeId;
 
-    private String name;
 
-    @Enumerated(EnumType.STRING) // gemmer enum-værdien som en streng.
+    @Column(name="name")
+    private String username;
+
+    @Column(nullable = false)
+    private String password;
+
     @Column(name="role")
-    private Role role; // admin eller Filmoperatør?
+    private String role; // ændret fra enum til en String så Spring Security kan give dem forskellige rettigehder
 
-    public enum Role {
-        ADMIN,
-        FILM_OPERATOR
-    }
+//    @Enumerated(EnumType.STRING) // gemmer enum-værdien som en streng.
+//    @Column(name="role")
+//    private Role role; // admin eller Filmoperatør?
+//
+//    public enum Role {
+//        ADMIN,
+//        FILM_OPERATOR
+//    }
 
 
 

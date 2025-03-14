@@ -1,10 +1,9 @@
 package kino.kinobackend.movie;
 
+import kino.kinobackend.genre.GenreServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,23 +18,13 @@ public class MovieServiceImpl implements MovieService {
 
     private final MovieRepository movieRepository;
     private final WebClient webClient;
+    private final GenreServiceImpl genreServiceImpl;
 
-    public MovieServiceImpl(WebClient webClient, MovieRepository movieRepository) {
+    public MovieServiceImpl(WebClient webClient, MovieRepository movieRepository, GenreServiceImpl genreServiceImpl) {
         this.webClient = webClient;
         this.movieRepository = movieRepository;
+        this.genreServiceImpl = genreServiceImpl;
     }
-
-    /*
-    *
-    * Here we have the methods to fetch and save data from tmdb to our database
-    *
-    * */
-
-    @Override
-    public MovieModel fetchMovie(String title) {
-        return null;
-    }
-
 
     /*
     *
@@ -43,12 +32,9 @@ public class MovieServiceImpl implements MovieService {
     *
     * */
 
-
     @Override
     public List<MovieModel> getMovies() {
-        // repo ...
-        List<MovieModel> movies = new ArrayList<>();
-        return movies;
+        return movieRepository.findAll();
     }
 
     /*
@@ -57,19 +43,36 @@ public class MovieServiceImpl implements MovieService {
     *
     * */
 
-    // Retrieve a movie from tmdb.org and save it to the database ...
+    // Retrieve latest movies from tmdb.org and save them to the database including genreNames ...
+    @Override
+    public List<MovieModel> fetchLatestMoviesFromAPI(){
 
+        int year = LocalDate.now().getYear();
+
+        List<MovieModel> latestMovies = webClient.get()
+                .uri("discover/movie?include_adult=false&include_video=false&language=da&page=1&sort_by=popularity.desc&year=" + year )
+                .retrieve()
+                .bodyToMono(MoviesResponse.class)
+                .map(movieResponse -> movieResponse.getResults().stream()  // Stream the results
+                        .filter(movie -> movie.getReleaseDate() != null && movie.getReleaseDate().isBefore(LocalDate.now()))
+                        .collect(Collectors.toList()))
+                .doOnTerminate(() -> System.out.println("Data fetched"))
+                .doOnError(error -> System.out.println("Error fetching data: " + error.getMessage()))
+                .block();
+
+        for(MovieModel movie : latestMovies) {
+            genreServiceImpl.addGenrestoGenreListByMovie(movie);
+            movieRepository.save(movie);
+        }
+        return latestMovies;
+    }
 
     // Get upcoming movies from tmdb.org from today and one page ahead ... returned as a list of MovieModel instances
     @Override
     public List<MovieModel> getUpcomingMovies() {
 
-        LocalDate today = LocalDate.now();
-
-        return webClient.get()
-                .uri("/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&primary_release_date.gte=" + today + "&sort_by=primary_release_date.asc")
-                                // .queryParam("release_date.gte", today)
-                                //.build()
+        List<MovieModel> comingMovies = webClient.get()
+                .uri("discover/movie?include_adult=false&include_video=false&language=da&page=1&sort_by=popularity.desc&with_original_language=da&year=2025")
                 .retrieve()
                 .bodyToMono(MoviesResponse.class)
                 .map(movieResponse -> movieResponse.getResults().stream()  // Stream the results
@@ -78,12 +81,36 @@ public class MovieServiceImpl implements MovieService {
                 .doOnTerminate(() -> System.out.println("Data fetched"))
                 .doOnError(error -> System.out.println("Error fetching data: " + error.getMessage()))
                 .block();
+
+        for(MovieModel movie : comingMovies) {
+            genreServiceImpl.addGenrestoGenreListByMovie(movie);
+        }
+        return comingMovies;
     }
+
+    /*
+     *
+     * Here we have the methods to fetch and save data from tmdb to our database
+     *
+     * */
 
     @Override
     public MovieModel getMovie(int id) {
+        return movieRepository.findById(id).orElseThrow(IllegalAccessError::new);
+    }
 
-        MovieModel movie = new MovieModel();
-        return movie;
+    @Override
+    public MovieModel createMovie(MovieModel movie) {
+        return movieRepository.save(movie);
+    }
+
+    @Override
+    public MovieModel updateMovie(MovieModel movie) {
+        return movieRepository.save(movie);
+    }
+
+    @Override
+    public void deleteMovie(int id) {
+        movieRepository.deleteById(id);
     }
 }

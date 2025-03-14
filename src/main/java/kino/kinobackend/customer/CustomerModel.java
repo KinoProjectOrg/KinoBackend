@@ -19,14 +19,9 @@ public class CustomerModel {
     @Column(name = "customer_id")
     private long customerId;
 
-    private String name;
-    private String email;
-    private String phone;
+    private String username; // email
+//    private String email;
+//    private String phone;
+    private String password;
 
-    public void setCustomerId(long customerId) {
-        this.customerId = customerId;
-    }
-    public long getCustomerId() {
-        return customerId;
-    }
 }
