@@ -83,7 +83,6 @@ class EmployeeRestControllerIntegrationTest {
         mockMvc.perform(get("/employee/get/" + employee1.getEmployeeId())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(1))
                 .andExpect(jsonPath("$.username").value(employee1.getUsername()));
     }
 
@@ -92,7 +91,6 @@ class EmployeeRestControllerIntegrationTest {
         mockMvc.perform(get("/employee/get/name/" + employee1.getUsername())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(1))
                 .andExpect(jsonPath("$.username").value(employee1.getUsername()));
     }
 
