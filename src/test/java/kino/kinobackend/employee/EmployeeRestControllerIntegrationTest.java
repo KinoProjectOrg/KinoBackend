@@ -64,7 +64,7 @@ class EmployeeRestControllerIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(newEmployee))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.username").value("Jakonb"));
+                .andExpect(jsonPath("$.username").value("Jakob"));
 
     }
 

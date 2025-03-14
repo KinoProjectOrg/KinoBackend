@@ -1,5 +1,6 @@
 package kino.kinobackend.showing;
 
+import kino.kinobackend.movie.MovieModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,11 +35,13 @@ public class ShowingController {
 
     @PostMapping(("/newShowing"))
     public ResponseEntity<ShowingModel> addShowing(@RequestBody ShowingModel showingModel) {
-        if (showingService.getAllShowings().contains(showingModel)) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        } else {
-            showingService.createShowing(showingModel);
-            return ResponseEntity.status(HttpStatus.CREATED).body(showingModel);
+        try {
+            // Now save the showing
+            ShowingModel savedShowing = showingService.createShowing(showingModel);
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedShowing);
+        } catch (Exception e) {
+            e.printStackTrace();  // Log the error
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
